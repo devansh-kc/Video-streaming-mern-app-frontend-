@@ -25,6 +25,7 @@ const Register = () => {
     // const instance = axios.create({
     //   baseURL: "http://localhost:8000/api/v1/users/register",
     // });
+    
 
     try {
       const response = await axios.post("/api/v1/users/register", formData, {

@@ -4,13 +4,14 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import conf from "./Conf"
 import Register from "./Page/Register"
+import { Outlet } from "react-router-dom"
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <div>
-      <h1> hi bitch welcomme to fittube</h1>
+      <Outlet/>
     </div>
   )
 }
