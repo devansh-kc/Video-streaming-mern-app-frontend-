@@ -1,32 +1,36 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import isEmail from "validator/lib/isEmail";
 
 const Login = () => {
+  // TODO: i have to check that the user had entered the username or email
+  //
   const [userDetails, setUserDetails] = useState({
-    username: "",
-    email: "",
+    userNameOrEmail: "",
     password: "",
   });
   const navigate = useNavigate();
-  const validateEmailOrPassword = (input) => {
-    const emailRegex =
-      /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm;
-    const usernameRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-    console.log(emailRegex.test(input), usernameRegex.test(input));
-    return emailRegex.test(input) || usernameRegex.test(input);
-  };
 
   const formData = new FormData();
-  formData.append("username", userDetails.username);
+
+  const validateEmailOrUsername = (input) => {
+    const ValidateEmail = isEmail(input);
+    console.log(ValidateEmail);
+    if (ValidateEmail == true) {
+      formData.append("email", userDetails.userNameOrEmail);
+    } else {
+      formData.append("username", userDetails.userNameOrEmail);
+    }
+  };
   formData.append("password", userDetails.password);
 
   async function onHandleSubmit() {
-    if (!userDetails.username || !userDetails.password) {
+    if (!userDetails.userNameOrEmail || !userDetails.password) {
       alert("please provide username or email and password");
-      return 
+      return;
     }
+    validateEmailOrUsername(userDetails.userNameOrEmail);
     try {
       const response = await axios.post("/api/v1/users/login", formData, {
         headers: {
@@ -78,11 +82,11 @@ const Login = () => {
                 <input
                   placeholder="Enter a username or email..."
                   autoComplete="false"
-                  value={userDetails.username}
+                  value={userDetails.userNameOrEmail}
                   onChange={(e) => {
                     setUserDetails({
                       ...userDetails,
-                      username: e.target.value,
+                      userNameOrEmail: e.target.value,
                     });
                   }}
                   className="w-full border-[1px] border-white bg-black p-4 text-white placeholder:text-gray-500"
