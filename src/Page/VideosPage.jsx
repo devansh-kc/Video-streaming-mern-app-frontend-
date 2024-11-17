@@ -22,7 +22,7 @@ export function VerticalVideoPage() {
         {videos.map((video, idx) => {
           return (
             <div class="flex flex-col gap-4 p-4">
-              <VerticalCard VideoDetails={video} key={idx} />
+            <VerticalCard VideoDetails={video} key={idx} />
             </div>
           );
         })}

@@ -44,7 +44,7 @@ export function VerticalCard({ VideoDetails }) {
     <div className="w-full max-w-3xl gap-x-4 md:flex">
       <div className="relative mb-2 w-full md:mb-0 md:w-5/12">
         <div className="w-full pt-[56%]">
-          <div class="absolute inset-0">
+          <div className="absolute inset-0">
             <img
               src={VideoDetails.thumbnail}
               alt={VideoDetails.title}
@@ -73,18 +73,73 @@ export function VerticalCard({ VideoDetails }) {
             {VideoDetails.time}
           </p>
           <div className="flex items-center gap-x-4">
-            <div class="mt-2 hidden h-10 w-10 shrink-0 md:block">
+            <div className="mt-2 hidden h-10 w-10 shrink-0 md:block">
               <img
                 src={VideoDetails.owner.avatar}
                 alt={VideoDetails.owner.username}
-                class="h-full w-full rounded-full"
+                className="h-full w-full rounded-full"
               />
             </div>
-            <p class="text-sm text-gray-200">{VideoDetails.owner.username}</p>
+            <p className="text-sm text-gray-200">
+              {VideoDetails.owner.username}
+            </p>
           </div>
-          <p class="mt-2 hidden text-sm md:block">{VideoDetails.description}</p>
+          <p className="mt-2 hidden text-sm md:block">
+            {VideoDetails.description}
+          </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function ChannelCard({ videoDetails }) {
+  return (
+    <div className="w-full">
+      <div className="relative mb-2 w-full pt-[56%]">
+        <div className="absolute inset-0">
+          <img src={videoDetails.thumbnail} className="h-full w-full" />
+        </div>
+        <span className="absolute bottom-1 right-1 inline-block rounded bg-black px-1.5 text-sm">
+          {videoDetails.duration}
+        </span>
+      </div>
+      <h6 className="mb-1 font-semibold">{videoDetails.title}</h6>
+      <p className="flex text-sm text-gray-200">
+        {videoDetails.views} Views &nbsp; {videoDetails.time} ago
+      </p>
+    </div>
+  );
+}
+
+export function PlayListCard({ videoDetails }) {
+
+  return (
+    <div className="w-full">
+      <div className="relative mb-2 w-full pt-[56%]">
+        <div className="absolute inset-0">
+          <img
+            src={videoDetails.videos[0].thumbnail}
+            alt={videoDetails.title}
+            className="h-full w-full"
+          />
+          <div className="absolute inset-x-0 bottom-0">
+            <div className="relative border-t bg-white/30 p-4 text-white backdrop-blur-sm before:absolute before:inset-0 before:bg-black/40">
+              <div className="relative z-[1]">
+                <p className="flex justify-between">
+                  <span className="inline-block">Playlist</span>
+                  <span className="inline-block"> videos</span>
+                </p>
+                <p className="text-sm text-gray-200">
+                  {videoDetails.views} Views ·  {videoDetails.createdAt}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h6 className="mb-1 font-semibold">{videoDetails.name}</h6>
+      <p className="flex text-sm text-gray-200">{videoDetails.description}</p>
     </div>
   );
 }
