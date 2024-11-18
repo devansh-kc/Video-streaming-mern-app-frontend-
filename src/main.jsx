@@ -10,6 +10,7 @@ import Layout from "./outlet/Layout.jsx";
 import { HorizontalVideosPage, VerticalVideoPage } from "./Page/VideosPage.jsx";
 import { VideoPlayerPage } from "./Page/VideoPlayerPage.jsx";
 import ChannelPage from "./Page/ChannelPage.jsx";
+import PlayListVideoPage from "./Page/PlayListVideoPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,8 +21,13 @@ const router = createBrowserRouter([
         element: <HorizontalVideosPage />,
       },
       {
-        path: "channel",
+        path: "/channel",
         element: <ChannelPage />,
+      },
+      {
+        path: "/channel/playlist/:id",
+        element: <PlayListVideoPage />,
+
       },
       {
         path: "/videoPage",

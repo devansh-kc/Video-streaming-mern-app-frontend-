@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export function HorizontalCard({ VideoDetails }) {
   return (
@@ -113,16 +114,17 @@ export function ChannelCard({ videoDetails }) {
 }
 
 export function PlayListCard({ videoDetails }) {
-
   return (
     <div className="w-full">
       <div className="relative mb-2 w-full pt-[56%]">
         <div className="absolute inset-0">
-          <img
-            src={videoDetails.videos[0].thumbnail}
-            alt={videoDetails.title}
-            className="h-full w-full"
-          />
+          <Link to={`/channel/playlist/${videoDetails.id}`}>
+            <img
+              src={videoDetails.videos[0].thumbnail}
+              alt={videoDetails.title}
+              className="h-full w-full"
+            />
+          </Link>
           <div className="absolute inset-x-0 bottom-0">
             <div className="relative border-t bg-white/30 p-4 text-white backdrop-blur-sm before:absolute before:inset-0 before:bg-black/40">
               <div className="relative z-[1]">
