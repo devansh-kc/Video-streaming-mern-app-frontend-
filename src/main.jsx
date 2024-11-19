@@ -5,7 +5,6 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Register from "./Page/Register.jsx";
 import Login from "./Page/Login.jsx";
-import HomePage from "./Page/HomePage.jsx";
 import Layout from "./outlet/Layout.jsx";
 import { HorizontalVideosPage, VerticalVideoPage } from "./Page/VideosPage.jsx";
 import { VideoPlayerPage } from "./Page/VideoPlayerPage.jsx";

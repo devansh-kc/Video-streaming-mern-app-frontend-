@@ -1,5 +1,5 @@
 import React from "react";
-import { HorizontalCard, VerticalCard } from "../components/VideoCard/Card";
+import { HorizontalCard, VerticalCard } from "../components/Cards/Card";
 import { videos } from "../data";
 export function HorizontalVideosPage() {
   return (

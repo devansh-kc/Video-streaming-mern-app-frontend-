@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 export function HorizontalCard({ VideoDetails }) {
   return (
@@ -29,7 +30,7 @@ export function HorizontalCard({ VideoDetails }) {
 
           <p className="flex text-sm text-gray-300 justify-between">
             <span>{VideoDetails.views} Views</span>
-            <span>{VideoDetails.time} minutes ago</span>
+            <span>{VideoDetails.time} </span>
           </p>
           <p className="flex text-sm text-gray-400 py-1">
             {VideoDetails.owner.username}
@@ -142,6 +143,98 @@ export function PlayListCard({ videoDetails }) {
       </div>
       <h6 className="mb-1 font-semibold">{videoDetails.name}</h6>
       <p className="flex text-sm text-gray-200">{videoDetails.description}</p>
+    </div>
+  );
+}
+
+export function PlayListVideoCard({ videoDetail }) {
+  return (
+    <div className="border">
+      <div className="w-full max-w-3xl gap-x-4 sm:flex">
+        <div className="relative mb-2 w-full sm:mb-0 sm:w-5/12">
+          <div className="w-full pt-[56%]">
+            <div className="absolute inset-0">
+              <img
+                src={videoDetail.thumbnail}
+                alt={videoDetail.title}
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+          <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
+            {videoDetail.duration}
+          </span>
+        </div>
+        <div className="flex gap-x-2 px-2 sm:w-7/12 sm:px-0">
+          <div className="w-full">
+            <h6 className="mb-1 font-semibold sm:max-w-[75%]">
+              {videoDetail.title}
+            </h6>
+            <p className="flex text-sm text-gray-200 sm:mt-3">
+              {videoDetail.views}&nbsp;Views · {videoDetail.time}
+            </p>
+            <div className="flex flex-row items-center gap-x-4">
+              <div className="mt-2 hidden h-10 w-10 shrink-0 sm:block">
+                <img
+                  src={videoDetail.owner.avatar}
+                  alt={videoDetail.owner.username}
+                  className="h-full w-full rounded-full"
+                />
+              </div>
+              <p className="text-sm text-gray-200">
+                {videoDetail.owner.username}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function TweetCards({ tweetDetails }) {
+  return (
+    <div className="py-4">
+      <div className="flex gap-3 border-b border-gray-700 py-4 last:border-b-transparent">
+        <div className="h-14 w-14 shrink-0">
+          <img
+            src={tweetDetails.owner.avatar}
+            alt={tweetDetails.owner.username}
+            className="h-full w-full rounded-full"
+          />
+        </div>
+        <div className="w-full">
+          <h4 className="mb-1 flex items-center gap-x-2">
+            <span className="font-semibold">{tweetDetails.owner.fullName}</span>
+            <span class="inline-block text-sm text-gray-400">
+              {tweetDetails.createdAt}
+            </span>
+          </h4>
+          <p class="mb-2">{tweetDetails.content}</p>
+          <div className="flex gap-4">
+            <button
+              className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-like-count)] focus:after:content-[attr(data-like-count-alt)]"
+              data-like-count={tweetDetails.likeCount}
+              data-like-count-alt="424"
+            >
+              <ThumbsUp
+                size={18}
+                className=" text-inherit group-focus:text-[#ae7aff]"
+              />
+            </button>
+            <button
+              class="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-dislike-count)] focus:after:content-[attr(data-dislike-count-alt)]"
+              data-dislike-count={tweetDetails.dislikeCount}
+              data-dislike-count-alt="88"
+            >
+              <ThumbsDown
+                size={18}
+                className=" text-inherit group-focus:text-[#ae7aff]"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

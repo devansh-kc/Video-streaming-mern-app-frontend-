@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Folder, Play, UserPlus } from "lucide-react";
+import { Folder, Play, UserPlus, Users } from "lucide-react";
 import {
   ChannelCard,
   HorizontalCard,
   PlayListCard,
-} from "../components/VideoCard/Card";
-import { playlistList, videos } from "../data";
+  TweetCards,
+} from "../components/Cards/Card";
+import { playlistList, videos, tweets } from "../data";
 import EmptyData from "../components/EmptyDataComponent/EmptyData";
 
 function ChannelPage() {
@@ -47,8 +48,18 @@ function ChannelPage() {
             ))}
           </div>
         );
-      case "Tweets":
-        return <Tweets />;
+      case "tweets":
+        return notShowVideos ? (
+          <div className="m-4 p-4 align-middle text-center">
+            <EmptyData
+              icon={<Users />}
+              heading="No Tweets"
+              sentence="This channel has yet to make a Tweet."
+            />
+          </div>
+        ) : (
+          tweets.map((tweet) => <TweetCards tweetDetails={tweet} />)
+        );
       case "Subscribed":
         return <Subscribed />;
       default:
@@ -95,58 +106,58 @@ function ChannelPage() {
             </div>
           </div>
         </div>
+        <ul className="p-4 m-2 no-scrollbar sticky top-[66px] z-[2] flex flex-row gap-x-2 overflow-auto border-b-2 border-gray-400 bg-[#121212] py-2 sm:top-[82px]">
+          <li className="w-full">
+            <button
+              onClick={() => setActiveTab("videos")}
+              className={`w-full border-b-2 ${
+                activeTab === "videos"
+                  ? "border-[#ae7aff] bg-white text-[#ae7aff]"
+                  : "border-none text-gray-400"
+              }  text-gray-400  px-3 py-1.5 `}
+            >
+              Videos
+            </button>
+          </li>
+          <li className="w-full">
+            <button
+              onClick={() => setActiveTab("playlist")}
+              className={`w-full border-b-2 ${
+                activeTab === "playlist"
+                  ? "border-[#ae7aff] bg-white text-[#ae7aff]"
+                  : "border-none text-gray-400"
+              }  text-gray-400  px-3 py-1.5 `}
+            >
+              PlayList
+            </button>
+          </li>
+          <li className="w-full">
+            <button
+              onClick={() => setActiveTab("tweets")}
+              className={`w-full border-b-2 ${
+                activeTab === "tweets"
+                  ? "border-[#ae7aff] bg-white text-[#ae7aff]"
+                  : "border-none text-gray-400"
+              }  text-gray-400  px-3 py-1.5 `}
+            >
+              Tweets
+            </button>
+          </li>
+          <li className="w-full">
+            <button
+              onClick={() => setActiveTab("subscribed")}
+              className={`w-full border-b-2 ${
+                activeTab === "Subscribed"
+                  ? "border-[#ae7aff] bg-white text-[#ae7aff]"
+                  : "border-none text-gray-400"
+              }  text-gray-400  px-3 py-1.5 `}
+            >
+              Subscribed
+            </button>
+          </li>
+        </ul>
+        {renderContent()}
       </div>
-      <ul className="p-4 m-2 no-scrollbar sticky top-[66px] z-[2] flex flex-row gap-x-2 overflow-auto border-b-2 border-gray-400 bg-[#121212] py-2 sm:top-[82px]">
-        <li className="w-full">
-          <button
-            onClick={() => setActiveTab("videos")}
-            className={`w-full border-b-2 ${
-              activeTab === "videos"
-                ? "border-[#ae7aff] bg-white text-[#ae7aff]"
-                : "border-none text-gray-400"
-            }  text-gray-400  px-3 py-1.5 `}
-          >
-            Videos
-          </button>
-        </li>
-        <li className="w-full">
-          <button
-            onClick={() => setActiveTab("playlist")}
-            className={`w-full border-b-2 ${
-              activeTab === "playlist"
-                ? "border-[#ae7aff] bg-white text-[#ae7aff]"
-                : "border-none text-gray-400"
-            }  text-gray-400  px-3 py-1.5 `}
-          >
-            PlayList
-          </button>
-        </li>
-        <li className="w-full">
-          <button
-            onClick={() => setActiveTab("tweets")}
-            className={`w-full border-b-2 ${
-              activeTab === "tweets"
-                ? "border-[#ae7aff] bg-white text-[#ae7aff]"
-                : "border-none text-gray-400"
-            }  text-gray-400  px-3 py-1.5 `}
-          >
-            Tweets
-          </button>
-        </li>
-        <li className="w-full">
-          <button
-            onClick={() => setActiveTab("Subscribed")}
-            className={`w-full border-b-2 ${
-              activeTab === "Subscribed"
-                ? "border-[#ae7aff] bg-white text-[#ae7aff]"
-                : "border-none text-gray-400"
-            }  text-gray-400  px-3 py-1.5 `}
-          >
-            Subscribed
-          </button>
-        </li>
-      </ul>
-      {renderContent()}
     </section>
   );
 }
