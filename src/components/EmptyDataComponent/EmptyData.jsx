@@ -1,6 +1,6 @@
 import React from "react";
 
-function EmptyData({ icon, heading, sentence }) {
+function EmptyData({ icon, heading, sentence,  }) {
   return (
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="flex h-full items-center justify-center">

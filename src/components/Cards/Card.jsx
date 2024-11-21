@@ -206,11 +206,11 @@ export function TweetCards({ tweetDetails }) {
         <div className="w-full">
           <h4 className="mb-1 flex items-center gap-x-2">
             <span className="font-semibold">{tweetDetails.owner.fullName}</span>
-            <span class="inline-block text-sm text-gray-400">
+            <span className="inline-block text-sm text-gray-400">
               {tweetDetails.createdAt}
             </span>
           </h4>
-          <p class="mb-2">{tweetDetails.content}</p>
+          <p className="mb-2">{tweetDetails.content}</p>
           <div className="flex gap-4">
             <button
               className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-like-count)] focus:after:content-[attr(data-like-count-alt)]"
@@ -223,7 +223,7 @@ export function TweetCards({ tweetDetails }) {
               />
             </button>
             <button
-              class="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-dislike-count)] focus:after:content-[attr(data-dislike-count-alt)]"
+              className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-dislike-count)] focus:after:content-[attr(data-dislike-count-alt)]"
               data-dislike-count={tweetDetails.dislikeCount}
               data-dislike-count-alt="88"
             >
@@ -234,6 +234,34 @@ export function TweetCards({ tweetDetails }) {
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function SubscribersCard({ subscriberDetails }) {
+  return (
+    <div className="flex  w-full justify-between">
+      <div className="flex items-center gap-x-2">
+        <div className="w-16 h-16 shrink-0">
+          <img
+            className="rounded-full w-full h-full"
+            src={subscriberDetails.avatar}
+            alt={subscriberDetails.fullName}
+          />
+        </div>
+        <div className="block">
+          <p className="font-semibold">{subscriberDetails.fullName}</p>
+          <p className="text-sm text-gray-300">
+            {subscriberDetails.subscribers}&nbsp;Subscribers
+          </p>
+        </div>{" "}
+      </div>
+      <div className="block">
+        <button className="group/btn px-3 py-2 text-black bg-[#ae7aff] focus:bg-white">
+          <span className="hidden group-focus/btn:inline" >Subscribed</span>
+          <span className="group-focus/btn:hidden">Subscribe</span>
+        </button>
       </div>
     </div>
   );

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Folder, Play, UserPlus, Users } from "lucide-react";
+import { Folder, Play, Search, UserPlus, Users } from "lucide-react";
 import {
   ChannelCard,
   HorizontalCard,
   PlayListCard,
+  SubscribersCard,
   TweetCards,
 } from "../components/Cards/Card";
-import { playlistList, videos, tweets } from "../data";
+import { playlistList, videos, tweets, channels } from "../data";
 import EmptyData from "../components/EmptyDataComponent/EmptyData";
 
 function ChannelPage() {
-  let notShowVideos = false;
+  let notShowVideos = true;
   const [activeTab, setActiveTab] = useState("videos");
 
   const renderContent = () => {
@@ -58,12 +59,41 @@ function ChannelPage() {
             />
           </div>
         ) : (
-          tweets.map((tweet) => <TweetCards tweetDetails={tweet} />)
+          tweets.map((tweet) => (
+            <TweetCards tweetDetails={tweet} key={tweet.id} />
+          ))
         );
-      case "Subscribed":
-        return <Subscribed />;
+      case "subscribed":
+        return notShowVideos ? (
+          <div className="m-4 p-4 align-middle text-center">
+            <EmptyData
+              icon={<Users />}
+              heading="No people subscribers"
+              sentence="This channel has yet to subscribe a new channel."
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col gap-y-4 py-4">
+            <div className="relative mb-2 rounded-lg bg-white py-2 pl-8 pr-3  text-black">
+              <span className="absolute left-2 top-1/2 -translate-y-1/2  text-gray-400">
+                <Search />
+              </span>
+              <input
+                className="w-full bg-transparent outline-none"
+                type="text"
+                placeholder="search"
+              />
+            </div>
+            {channels.map((channelDetails) => (
+              <SubscribersCard
+                subscriberDetails={channelDetails}
+                key={channelDetails.id}
+              />
+            ))}
+          </div>
+        );
       default:
-        return null;
+        setActiveTab("videos");
     }
   };
   return (
@@ -147,7 +177,7 @@ function ChannelPage() {
             <button
               onClick={() => setActiveTab("subscribed")}
               className={`w-full border-b-2 ${
-                activeTab === "Subscribed"
+                activeTab === "subscribed"
                   ? "border-[#ae7aff] bg-white text-[#ae7aff]"
                   : "border-none text-gray-400"
               }  text-gray-400  px-3 py-1.5 `}
