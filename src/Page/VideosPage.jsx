@@ -21,7 +21,7 @@ export function VerticalVideoPage() {
       <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
         {videos.map((video, idx) => {
           return (
-            <div class="flex flex-col gap-4 p-4">
+            <div className="flex flex-col gap-4 p-4">
             <VerticalCard VideoDetails={video} key={idx} />
             </div>
           );

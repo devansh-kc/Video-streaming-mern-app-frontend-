@@ -10,6 +10,7 @@ import { HorizontalVideosPage, VerticalVideoPage } from "./Page/VideosPage.jsx";
 import { VideoPlayerPage } from "./Page/VideoPlayerPage.jsx";
 import ChannelPage from "./Page/ChannelPage.jsx";
 import PlayListVideoPage from "./Page/PlayListVideoPage.jsx";
+import UploadVideoModalComponent from "./components/Upload Video Component/UploadVideoModalComponent.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,11 +23,16 @@ const router = createBrowserRouter([
       {
         path: "/channel",
         element: <ChannelPage />,
+        children: [
+          {
+            path: "/channel/videoUpload",
+            element: <UploadVideoModalComponent />,
+          },
+        ],
       },
       {
         path: "/channel/playlist/:id",
         element: <PlayListVideoPage />,
-
       },
       {
         path: "/videoPage",

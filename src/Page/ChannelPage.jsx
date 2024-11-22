@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Folder, Play, Search, UserPlus, Users } from "lucide-react";
+import { Folder, Play, Search, UserPlus, Users, Pencil } from "lucide-react";
+
 import {
   ChannelCard,
   HorizontalCard,
@@ -9,10 +10,13 @@ import {
 } from "../components/Cards/Card";
 import { playlistList, videos, tweets, channels } from "../data";
 import EmptyData from "../components/EmptyDataComponent/EmptyData";
+import UploadVideoModalComponent from "../components/Upload Video Component/UploadVideoModalComponent";
+import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
 
 function ChannelPage() {
   let notShowVideos = true;
   const [activeTab, setActiveTab] = useState("videos");
+  const LoggedInUser = false;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -23,6 +27,7 @@ function ChannelPage() {
               icon={<Play />}
               heading="No videos uploaded"
               sentence="This page has yet to upload a video. Search another page in order to find more videos."
+              LoggedInUser={LoggedInUser}
             />
           </div>
         ) : (
@@ -124,15 +129,24 @@ function ChannelPage() {
           </div>
           <div className="inline-block">
             <div className="inline-flex min-w-[145px]">
-              <button className="group/btn mr-1 flex w-full items-center gap-x-2 bg-[#ae7aff] px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto">
-                <span className="inline-block w-5">
-                  <UserPlus className="inline-block w-5 " />
-                </span>
-                <span className="group-focus/btn:hidden">Subscribe</span>
-                <span className="hidden group-focus/btn:block">
-                  Subscribed
-                </span>{" "}
-              </button>
+              {LoggedInUser ? (
+                <button className="group/btn mr-1 flex w-full items-center gap-x-2 bg-[#ae7aff] px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto">
+                  <span className="inline-block w-5">
+                    <Pencil className="inline-block w-5 " />
+                  </span>
+                  <span className="group-focus/btn:hidden">Edit</span>
+                </button>
+              ) : (
+                <button className="group/btn mr-1 flex w-full items-center gap-x-2 bg-[#ae7aff] px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto">
+                  <span className="inline-block w-5">
+                    <UserPlus className="inline-block w-5 " />
+                  </span>
+                  <span className="group-focus/btn:hidden">Subscribe</span>
+                  <span className="hidden group-focus/btn:block">
+                    Subscribed
+                  </span>{" "}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -187,6 +201,8 @@ function ChannelPage() {
           </li>
         </ul>
         {renderContent()}
+        {/* <UploadVideoModalComponent /> */}
+        <VideoUploadProgress />
       </div>
     </section>
   );
