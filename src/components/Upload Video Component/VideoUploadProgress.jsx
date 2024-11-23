@@ -1,7 +1,8 @@
-import { Cross, Film, Loader, Loader2, X } from "lucide-react";
+import { CircleCheck, Cross, Film, Loader, Loader2, X } from "lucide-react";
 import React from "react";
 
 function VideoUploadProgress() {
+  const Loading = true;
   return (
     <div className="absolute inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center bg-black/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
       <div className=" w-full max-w-lg overflow-auto rounded-lg border border-gray-700 bg-[#121212] p-4">
@@ -28,7 +29,11 @@ function VideoUploadProgress() {
             <h6>Dashboard prototype recording.mp4</h6>
             <p className="text-sm">16MB</p>
             <div className="mt-2">
-              <Loader2 className="mr-2 inline-block h-5 w-5 animate-spin text-gray-200" />
+              {Loading ? (
+                <Loader2 className="mr-2 inline-block h-5 w-5 animate-spin text-[#9c76d8] " />
+              ) : (
+                <CircleCheck className="mr-2 inline-block h-5 w-5 text-[#9c76d8] " />
+              )}
               <span>Uploading...</span>
             </div>
           </div>
@@ -37,7 +42,7 @@ function VideoUploadProgress() {
           <button className="border border-white px-4 py-3 m-2 ">Cancel</button>
           <button
             className="border border-white text-black disabled:bg-[#E4D3FF] m-2 px-4 py-3 bg-[#Ae7Aff]"
-            disabled
+            disabled={Loading}
           >
             Finish
           </button>

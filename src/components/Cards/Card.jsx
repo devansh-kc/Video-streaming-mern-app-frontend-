@@ -235,6 +235,7 @@ export function TweetCards({ tweetDetails }) {
           </div>
         </div>
       </div>
+      <hr />
     </div>
   );
 }
@@ -259,10 +260,23 @@ export function SubscribersCard({ subscriberDetails }) {
       </div>
       <div className="block">
         <button className="group/btn px-3 py-2 text-black bg-[#ae7aff] focus:bg-white">
-          <span className="hidden group-focus/btn:inline" >Subscribed</span>
+          <span className="hidden group-focus/btn:inline">Subscribed</span>
           <span className="group-focus/btn:hidden">Subscribe</span>
         </button>
       </div>
     </div>
+  );
+}
+
+export function NavbarList({ headings, onClick }) {
+  return (
+    <li className="w-full">
+      <button
+        onClick
+        className="w-full border-b-2 border-[#ae7aff] focus:bg-white  focus:text-[#ae7aff] border-none text-gray-400 px-3 py-1.5 "
+      >
+        {headings}
+      </button>
+    </li>
   );
 }

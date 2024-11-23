@@ -11,6 +11,7 @@ import { VideoPlayerPage } from "./Page/VideoPlayerPage.jsx";
 import ChannelPage from "./Page/ChannelPage.jsx";
 import PlayListVideoPage from "./Page/PlayListVideoPage.jsx";
 import UploadVideoModalComponent from "./components/Upload Video Component/UploadVideoModalComponent.jsx";
+import EditInfoPage from "./Page/EditInfoPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
             element: <UploadVideoModalComponent />,
           },
         ],
+      },
+      {
+        path: "/editInfo",
+        element: <EditInfoPage />,
       },
       {
         path: "/channel/playlist/:id",

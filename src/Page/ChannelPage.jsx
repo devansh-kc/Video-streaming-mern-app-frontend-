@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Folder, Play, Search, UserPlus, Users, Pencil } from "lucide-react";
+import {
+  Folder,
+  Play,
+  Search,
+  UserPlus,
+  Users,
+  Pencil,
+  Plus,
+  X,
+  Smile,
+  Ellipsis,
+} from "lucide-react";
 
 import {
   ChannelCard,
@@ -14,9 +25,49 @@ import UploadVideoModalComponent from "../components/Upload Video Component/Uplo
 import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
 
 function ChannelPage() {
-  let notShowVideos = true;
+  const [content, setContent] = useState("");
+
+  let notShowVideos = false;
   const [activeTab, setActiveTab] = useState("videos");
-  const LoggedInUser = false;
+  const LoggedInUser = true;
+
+  function TweetPopup() {
+    return (
+      <div className="absolute inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center bg-black/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
+        <div className=" w-full max-w-lg overflow-auto rounded-lg border border-gray-700 bg-[#121212] p-4">
+          <div className="mb-6 flex items-start justify-between">
+            <h2 className="text-xl font-semibold">
+              Write down the Content for the Tweet
+              <span className="block text-sm text-gray-300">
+                Write something
+              </span>
+            </h2>
+            <button className="h-6 w-6">
+              <X />
+            </button>
+          </div>
+          <div className=" p-2  mb-5 gap-x-2">
+            <textarea
+              className="bg-transparent resize-none w-full h-full border p-5"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
+            <div className="flex  items-center justify-end gap-x-3 px-3 mt-2">
+              <button className="inline-block h-5 w-5 hover:text-[#ae7aff]">
+                <Smile />
+              </button>
+              <button className="inline-block h-5 w-5 hover:text-[#ae7aff]">
+                <Ellipsis />
+              </button>
+              <button className="inline-block h-max w-max py-2 font-semibold px-3 bg-[#ae7aff] text-black">
+                send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -28,6 +79,12 @@ function ChannelPage() {
               heading="No videos uploaded"
               sentence="This page has yet to upload a video. Search another page in order to find more videos."
               LoggedInUser={LoggedInUser}
+              Children={
+                <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
+                  <Plus size={22} />
+                  New Video
+                </button>
+              }
             />
           </div>
         ) : (
@@ -61,12 +118,28 @@ function ChannelPage() {
               icon={<Users />}
               heading="No Tweets"
               sentence="This channel has yet to make a Tweet."
+              LoggedInUser={LoggedInUser}
+              Children={
+                <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
+                  <Plus size={22} />
+                  Add a Tweet
+                </button>
+              }
             />
           </div>
         ) : (
-          tweets.map((tweet) => (
-            <TweetCards tweetDetails={tweet} key={tweet.id} />
-          ))
+          <div>
+            {tweets.map((tweet) => (
+              <TweetCards tweetDetails={tweet} key={tweet.id} />
+            ))}
+
+            {LoggedInUser && (
+              <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
+                <Plus size={22} />
+                Add a Tweet
+              </button>
+            )}
+          </div>
         );
       case "subscribed":
         return notShowVideos ? (
@@ -74,6 +147,7 @@ function ChannelPage() {
             <EmptyData
               icon={<Users />}
               heading="No people subscribers"
+              LoggedInUser={LoggedInUser}
               sentence="This channel has yet to subscribe a new channel."
             />
           </div>
@@ -102,7 +176,7 @@ function ChannelPage() {
     }
   };
   return (
-    <section className="w-full pb-[70px]  sm:ml-[70px] sm:pb-0 lg:ml-0">
+    <section className="relative w-full pb-[70px]  sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="relative min-h-[150px] w-full pt-[16.28%]">
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -202,7 +276,8 @@ function ChannelPage() {
         </ul>
         {renderContent()}
         {/* <UploadVideoModalComponent /> */}
-        <VideoUploadProgress />
+        {/* <VideoUploadProgress /> */}
+        {/* <TweetPopup /> */}
       </div>
     </section>
   );
