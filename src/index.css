@@ -6,3 +6,10 @@
   width: 0px;
   display: none;
 }
+
+.selection{
+  select > option {
+  background: transparent;
+  color: white;
+}
+}

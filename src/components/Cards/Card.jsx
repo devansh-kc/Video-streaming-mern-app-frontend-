@@ -268,13 +268,10 @@ export function SubscribersCard({ subscriberDetails }) {
   );
 }
 
-export function NavbarList({ headings, onClick }) {
+export function NavbarList({ headings, onClick, className }) {
   return (
     <li className="w-full">
-      <button
-        onClick
-        className="w-full border-b-2 border-[#ae7aff] focus:bg-white  focus:text-[#ae7aff] border-none text-gray-400 px-3 py-1.5 "
-      >
+      <button onClick={onClick} className={className}>
         {headings}
       </button>
     </li>
