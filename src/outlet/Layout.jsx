@@ -7,10 +7,14 @@ function Layout() {
   const location = useLocation();
   return (
     <div className="h-screen overflow-y-auto bg-[#121212] text-white">
-      <Header />
+      <Header LoggedInUser={true} />
 
       <div className="flex min-h-[calc(100vh-66px)] sm:min-h-[calc(100vh-82px)]">
-        <SideBar hidden={location.pathname === "/videoPage" ? true : false} />
+        {location.pathname === "/admin" ? (
+          ""
+        ) : (
+          <SideBar hidden={location.pathname === "/videoPage" ? true : false} />
+        )}
         <Outlet />
       </div>
     </div>
