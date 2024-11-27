@@ -2,6 +2,7 @@ import { Eye, Heart, Pencil, Plus, Trash, Trash2, User } from "lucide-react";
 import React from "react";
 import { videos } from "../data.jsx";
 import EditVideoModalPage from "./EditVideoModalPage.jsx";
+import DeleteVideoModal from "../components/DeleteVideoComponent/DeleteVideoModal.jsx"
 
 function TableRow({ VideoDetails }) {
   return (
@@ -138,7 +139,8 @@ function AdminPage() {
           </tbody>
         </table>
       </div>
-      <EditVideoModalPage />
+      {/* <EditVideoModalPage /> */}
+      {/* <DeleteVideoModal/> */}
     </div>
   );
 }

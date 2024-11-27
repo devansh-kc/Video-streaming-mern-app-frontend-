@@ -14,6 +14,8 @@ import UploadVideoModalComponent from "./components/Upload Video Component/Uploa
 import EditInfoPage from "./Page/EditInfoPage.jsx";
 import AdminPage from "./Page/AdminPage.jsx";
 import EditVideoModalPage from "./Page/EditVideoModalPage.jsx";
+import PrivacyPage from "./Page/PrivacyPage.jsx";
+import TermsAndConditionPage from "./Page/TermsAndConditionsPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,7 +58,16 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage />,
+
       },
+      {
+        path:"/privacyPolicy",
+        element:<PrivacyPage/>
+      },
+      {
+        path:"/termsandconditions",
+        element:<TermsAndConditionPage/>
+      }
     ],
   },
 ]);
