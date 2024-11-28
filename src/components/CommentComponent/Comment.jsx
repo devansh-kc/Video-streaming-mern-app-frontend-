@@ -2,7 +2,7 @@ import React from "react";
 
 function Comment({ comment }) {
   return (
-    <div>
+    <div key={comment.id}>
       <div className="flex gap-x-4">
         <div className="mt-2 h-11 w-11 shrink-0">
           <img

@@ -7,11 +7,13 @@ export function HorizontalCard({ VideoDetails }) {
     <div className="w-full">
       <div className="relative mb-2 pt-[56%]">
         <div className="absolute inset-0">
-          <img
-            src={VideoDetails.thumbnail}
-            alt={VideoDetails.title}
-            className="w-full h-full"
-          />
+          <Link to={`/videopage/${VideoDetails.id}`}>
+            <img
+              src={VideoDetails.thumbnail}
+              alt={VideoDetails.title}
+              className="w-full h-full"
+            />
+          </Link>
         </div>
         <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
           {VideoDetails.duration}
@@ -47,11 +49,13 @@ export function VerticalCard({ VideoDetails }) {
       <div className="relative mb-2 w-full md:mb-0 md:w-5/12">
         <div className="w-full pt-[56%]">
           <div className="absolute inset-0">
-            <img
-              src={VideoDetails.thumbnail}
-              alt={VideoDetails.title}
-              className="w-full h-full"
-            />
+            <Link to={`/videopage/${VideoDetails.id}`}>
+              <img
+                src={VideoDetails.thumbnail}
+                alt={VideoDetails.title}
+                className="w-full h-full"
+              />
+            </Link>
           </div>
           <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
             {VideoDetails.duration}

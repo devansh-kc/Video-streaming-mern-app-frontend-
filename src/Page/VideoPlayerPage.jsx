@@ -3,6 +3,7 @@ import { videoDetails, videos } from "../data";
 import { ThumbsUp, ThumbsDown, Save, UserPlus } from "lucide-react";
 import Comment from "../components/CommentComponent/Comment";
 import RelatedVideo from "../components/RelatedVideoComponent/RelatedVideo";
+import { useParams } from "react-router-dom";
 function CheckBoxInput({ name, htmlfor }) {
   return (
     <li className="mb-2 last:mb-0">
@@ -192,7 +193,7 @@ export function VideoPlayerPage() {
             <hr className="my-4 border-white" />
 
             {videoDetails.comments.map((comment) => (
-              <Comment comment={comment} key={comment.id} />
+              <Comment comment={comment}  />
             ))}
           </div>
         </div>

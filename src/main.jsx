@@ -26,6 +26,11 @@ const router = createBrowserRouter([
         element: <HorizontalVideosPage />,
       },
       {
+        path:"/query",
+        element:<VerticalVideoPage/>
+
+      },
+      {
         path: "/channel",
         element: <ChannelPage />,
         children: [
@@ -44,7 +49,7 @@ const router = createBrowserRouter([
         element: <PlayListVideoPage />,
       },
       {
-        path: "/videoPage",
+        path: "/videoPage/:id",
         element: <VideoPlayerPage />,
       },
       {
