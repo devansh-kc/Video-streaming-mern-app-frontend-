@@ -10,6 +10,7 @@ import {
   Video,
 } from "lucide-react";
 import OptionComponent from "./SideBarOptionComponent/OptionComponent";
+import { Link } from "react-router-dom";
 
 function SideBar({ hidden }) {
   return (
@@ -19,7 +20,7 @@ function SideBar({ hidden }) {
       } `}
     >
       <ul className="flex justify-around gap-y-2 sm:sticky sm:top-[106px] sm:min-h-[calc(100vh-130px)] sm:flex-col">
-        <OptionComponent Icon={<Home />} Name="Home" hidden={hidden} />
+        <OptionComponent Icon={<Home />} Name="Home" hidden={hidden} navigation="/" />
         <OptionComponent
           Icon={<ThumbsUp />}
           Name="Liked Videos"
@@ -32,6 +33,7 @@ function SideBar({ hidden }) {
           Name="My Content"
           ClassName="hidden sm:block"
           hidden={hidden}
+          navigation="/channel"
         />
         <OptionComponent
           Icon={<FolderClosed />}
@@ -54,6 +56,7 @@ function SideBar({ hidden }) {
           Name="Settings"
           ClassName="hidden sm:block "
           hidden={hidden}
+          navigation="/settings"
         />
       </ul>
     </aside>

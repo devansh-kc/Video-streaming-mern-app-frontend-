@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/editInfo",
+        path: "/settings",
         element: <EditInfoPage />,
       },
       {

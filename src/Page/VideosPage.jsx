@@ -7,8 +7,8 @@ export function HorizontalVideosPage() {
     <>
       <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4 p-4">
-          {videos.map((video, idx) => {
-            return <HorizontalCard VideoDetails={video} key={idx} />;
+          {videos.map((video) => {
+            return <HorizontalCard VideoDetails={video}  />;
           })}
         </div>
       </section>

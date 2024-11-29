@@ -1,9 +1,9 @@
 import React from "react";
-
-function OptionComponent({ Icon, Name, ClassName = "", hidden }) {
+import {Link} from "react-router-dom"
+function OptionComponent({ Icon, Name, ClassName = "", hidden,navigation }) {
   return (
     <li className={ClassName}>
-      <button
+      <Link to={navigation}
         className={`flex flex-col items-center justify-center border-white py-1 focus:text-[#ae7aff] sm:w-full sm:flex-row sm:border sm:p-1.5 sm:hover:bg-[#ae7aff] sm:hover:text-black sm:focus:border-[#ae7aff] sm:focus:bg-[#ae7aff] sm:focus:text-black sm:group-hover:justify-start sm:group-hover:px-4 ${
           hidden ? "" : "lg:justify-start lg:px-4"
         }`}
@@ -20,7 +20,7 @@ function OptionComponent({ Icon, Name, ClassName = "", hidden }) {
         >
           {Name}
         </span>
-      </button>
+      </Link>
     </li>
   );
 }

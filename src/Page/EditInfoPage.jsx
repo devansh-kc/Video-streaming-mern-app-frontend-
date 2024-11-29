@@ -124,7 +124,7 @@ function EditInfoPage() {
                         className=" w-full border-r-1 rounded-md border bg-transparent py-1.5 pl-2"
                         style={{ backgroundColor: "#121212" }}
                       >
-                        <option value="regular" selected>
+                        <option value="regular" defaultValue="regular">
                           Regular
                         </option>
                         <option value="semi-bold">Semi-bold</option>
@@ -324,7 +324,7 @@ function EditInfoPage() {
                   <button className="px-3 py-2 border rounded-md">
                     Cancel
                   </button>
-                  <button className="px-3 py-2 border rounded-md bg-[#ae7aff] text-black" >
+                  <button className="px-3 py-2 border rounded-md bg-[#ae7aff] text-black">
                     Update Password
                   </button>
                 </div>
@@ -333,7 +333,7 @@ function EditInfoPage() {
           </div>
         );
       default:
-        activeTab
+        return () => setActiveTab("personalInfo");
     }
   }
   return (

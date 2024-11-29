@@ -56,10 +56,9 @@ const Login = () => {
   };
   return (
     <>
-      
       <div className="min-h-full bg-[#121212]">
         <div className="mx-auto flex w-full items-stretch justify-between gap-10">
-          <div className="mt-20 flex w-full flex-col items-start justify-start p-6 md:w-1/2 lg:px-10">
+          <div className="mt-20 flex w-full flex-col items-start justify-start p-6 max-w-md:w-1/2 lg:px-10">
             <div className="w-full">
               <h1 className="mb-2 text-5xl font-extrabold text-white">
                 Log in
