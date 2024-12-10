@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import { Github } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../Slice/auth.slice.js";
 
 const Login = () => {
   // TODO: i have to check that the user had entered the username or email
@@ -12,7 +14,7 @@ const Login = () => {
     password: "",
   });
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const formData = new FormData();
 
   const validateEmailOrUsername = (input) => {
@@ -39,8 +41,11 @@ const Login = () => {
         },
         withCredentials: true,
       });
+      const { user } = response.data.data;
 
       console.log("user logged in ");
+
+      dispatch(userLogin(user));
       navigate("/");
     } catch (error) {
       console.log(error);

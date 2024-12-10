@@ -16,6 +16,8 @@ import AdminPage from "./Page/AdminPage.jsx";
 import EditVideoModalPage from "./Page/EditVideoModalPage.jsx";
 import PrivacyPage from "./Page/PrivacyPage.jsx";
 import TermsAndConditionPage from "./Page/TermsAndConditionsPage.jsx";
+import store from "./store/Store.js";
+import { Provider } from "react-redux";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,9 +28,8 @@ const router = createBrowserRouter([
         element: <HorizontalVideosPage />,
       },
       {
-        path:"/query",
-        element:<VerticalVideoPage/>
-
+        path: "/query",
+        element: <VerticalVideoPage />,
       },
       {
         path: "/channel",
@@ -63,21 +64,22 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage />,
-
       },
       {
-        path:"/privacyPolicy",
-        element:<PrivacyPage/>
+        path: "/privacyPolicy",
+        element: <PrivacyPage />,
       },
       {
-        path:"/termsandconditions",
-        element:<TermsAndConditionPage/>
-      }
+        path: "/termsandconditions",
+        element: <TermsAndConditionPage />,
+      },
     ],
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  </Provider>
 );

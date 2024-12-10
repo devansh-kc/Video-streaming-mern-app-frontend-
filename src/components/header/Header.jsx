@@ -10,9 +10,11 @@ import {
   Settings,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function Header({ LoggedInUser }) {
+function Header() {
   const navigate = useNavigate();
+  const userDetails = useSelector((state) => state.user.userInfo);
   const [searchParams, setSearchParams] = useSearchParams();
   const [Input, setInput] = useState(searchParams.get("query") || "");
   function handleSearch(e) {
@@ -94,10 +96,10 @@ function Header({ LoggedInUser }) {
             </li>
           </ul>
           <div className="mb-8 mt-auto flex w-full flex-wrap gap-4 px-4 sm:mb-0 sm:mt-0 sm:items-center sm:px-0">
-            {LoggedInUser ? (
+            {userDetails ? (
               <img
-                src="https://images.pexels.com/photos/1115816/pexels-photo-1115816.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="userImage"
+                src={userDetails.avatar}
+                alt={userDetails.fullName}
                 className="h-16 w-16 shrink-0 rounded-full sm:h-12 sm:w-12"
               />
             ) : (
