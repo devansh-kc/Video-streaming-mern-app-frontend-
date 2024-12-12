@@ -2,13 +2,36 @@ import React from "react";
 import { HorizontalCard, VerticalCard } from "../components/Cards/Card";
 import { videos } from "../data";
 import { useParams, useSearchParams } from "react-router-dom";
+import axios from "axios";
 export function HorizontalVideosPage() {
+  async function fetchAllVideos() {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/videos",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  fetchAllVideos();
+
   return (
     <>
       <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4 p-4">
           {videos.map((video) => {
-            return <HorizontalCard VideoDetails={video}  />;
+            return <HorizontalCard VideoDetails={video} />;
           })}
         </div>
       </section>
@@ -19,7 +42,7 @@ export function HorizontalVideosPage() {
 export function VerticalVideoPage() {
   const [searchParams] = useSearchParams();
   const Title = decodeURI(searchParams.get("query"));
-  console.log(Title)
+  console.log(Title);
   const filteredData = videos.filter((video) => video.title.includes(Title));
 
   return (

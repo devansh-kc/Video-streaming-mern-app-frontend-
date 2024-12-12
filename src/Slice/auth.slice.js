@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const loadFromLocalStorage = (key) => {
   try {
     const serializedData = localStorage.getItem(key);
-    console.log(serializedData);
+
     if (serializedData === null) return null;
     return JSON.parse(serializedData);
   } catch (error) {
@@ -19,7 +19,6 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     userLogin: (state, action) => {
-      console.log(action);
       state.userInfo = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },

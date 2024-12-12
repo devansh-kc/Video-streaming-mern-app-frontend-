@@ -97,11 +97,16 @@ function Header() {
           </ul>
           <div className="mb-8 mt-auto flex w-full flex-wrap gap-4 px-4 sm:mb-0 sm:mt-0 sm:items-center sm:px-0">
             {userDetails ? (
-              <img
-                src={userDetails.avatar}
-                alt={userDetails.fullName}
-                className="h-16 w-16 shrink-0 rounded-full sm:h-12 sm:w-12"
-              />
+              <>
+                <img
+                  src={userDetails.avatar}
+                  alt={
+                    userDetails.fullName ||
+                    "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0="
+                  }
+                  className="h-16 w-16 shrink-0 rounded-full sm:h-12 sm:w-12"
+                />
+              </>
             ) : (
               <>
                 <Link

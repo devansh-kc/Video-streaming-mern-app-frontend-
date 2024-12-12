@@ -19,7 +19,7 @@ const Login = () => {
 
   const validateEmailOrUsername = (input) => {
     const ValidateEmail = isEmail(input);
-    console.log(ValidateEmail);
+
     if (ValidateEmail == true) {
       formData.append("email", userDetails.userNameOrEmail);
     } else {
@@ -35,15 +35,13 @@ const Login = () => {
     }
     validateEmailOrUsername(userDetails.userNameOrEmail);
     try {
-      const response = await axios.post("/api/v1/users/login", formData, {
+      const response = await axios.post("users/login", formData, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
       const { user } = response.data.data;
-
-      console.log("user logged in ");
 
       dispatch(userLogin(user));
       navigate("/");
