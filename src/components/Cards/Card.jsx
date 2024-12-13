@@ -4,14 +4,14 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 export function HorizontalCard({ VideoDetails }) {
   return (
-    <div className="w-full" key={VideoDetails.id}>
+    <div className="w-full" key={VideoDetails._id}>
       <div className="relative mb-2 pt-[56%]">
         <div className="absolute inset-0">
-          <Link to={`/videopage/${VideoDetails.id}`}>
+          <Link to={`/videopage/${VideoDetails._id}`}>
             <img
               src={VideoDetails.thumbnail}
               alt={VideoDetails.title}
-              className="w-full h-full"
+              className="w-full h-full shrink-0"
             />
           </Link>
         </div>
