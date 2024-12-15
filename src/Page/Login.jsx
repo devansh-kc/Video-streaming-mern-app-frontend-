@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import isEmail from "validator/lib/isEmail";
+
 import { Github } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../Slice/auth.slice.js";
@@ -17,15 +17,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const formData = new FormData();
 
-  const validateEmailOrUsername = (input) => {
-    const ValidateEmail = isEmail(input);
-
-    if (ValidateEmail == true) {
-      formData.append("email", userDetails.userNameOrEmail);
-    } else {
-      formData.append("username", userDetails.userNameOrEmail);
-    }
-  };
+  formData.append("email", userDetails.userNameOrEmail);
   formData.append("password", userDetails.password);
 
   async function onHandleSubmit() {
@@ -33,14 +25,18 @@ const Login = () => {
       alert("please provide username or email and password");
       return;
     }
-    validateEmailOrUsername(userDetails.userNameOrEmail);
+
     try {
-      const response = await axios.post("users/login", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
       const { user } = response.data.data;
 
       dispatch(userLogin(user));

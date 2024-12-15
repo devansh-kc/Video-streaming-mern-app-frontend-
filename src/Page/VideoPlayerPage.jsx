@@ -4,6 +4,7 @@ import { ThumbsUp, ThumbsDown, Save, UserPlus } from "lucide-react";
 import Comment from "../components/CommentComponent/Comment";
 import RelatedVideo from "../components/RelatedVideoComponent/RelatedVideo";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 function CheckBoxInput({ name, htmlfor }) {
   return (
     <li className="mb-2 last:mb-0">
@@ -35,6 +36,25 @@ function CheckBoxInput({ name, htmlfor }) {
 }
 
 export function VideoPlayerPage() {
+  const { id } = useParams();
+  async function FetchVideos(id) {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/videos/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  FetchVideos(id);
+
   return (
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0">
       <div className="flex w-full flex-wrap gap-4 p-4 lg:flex-nowrap">
@@ -193,7 +213,7 @@ export function VideoPlayerPage() {
             <hr className="my-4 border-white" />
 
             {videoDetails.comments.map((comment) => (
-              <Comment comment={comment}  />
+              <Comment comment={comment} key={comment.id} />
             ))}
           </div>
         </div>
@@ -202,7 +222,7 @@ export function VideoPlayerPage() {
           {videos
             .filter((video) => video.isPublished)
             .map((video) => (
-              <RelatedVideo videoDetails={video} />
+              <RelatedVideo videoDetails={video} key={video.id} />
             ))}
         </div>
       </div>
