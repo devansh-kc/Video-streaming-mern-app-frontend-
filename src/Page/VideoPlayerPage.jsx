@@ -1,10 +1,11 @@
-import React from "react";
-import { videoDetails, videos } from "../data";
-import { ThumbsUp, ThumbsDown, Save, UserPlus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { videos } from "../data";
+import { ThumbsUp, ThumbsDown, Save, UserPlus, CodeSquare } from "lucide-react";
 import Comment from "../components/CommentComponent/Comment";
 import RelatedVideo from "../components/RelatedVideoComponent/RelatedVideo";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { format } from "timeago.js";
 function CheckBoxInput({ name, htmlfor }) {
   return (
     <li className="mb-2 last:mb-0">
@@ -37,6 +38,9 @@ function CheckBoxInput({ name, htmlfor }) {
 
 export function VideoPlayerPage() {
   const { id } = useParams();
+  const [videoDetails, setVideoDetails] = useState(null);
+  const [userViewandDetails, setUserViewandDetails] = useState(null);
+  const [comments, setComments] = useState(null);
   async function FetchVideos(id) {
     try {
       const response = await axios.get(
@@ -48,12 +52,37 @@ export function VideoPlayerPage() {
           withCredentials: true,
         }
       );
-      console.log(response.data);
+
+      const { getLikeCommentAndSubscription, getVideoDetails } =
+        response.data.data[0];
+
+      setVideoDetails(getVideoDetails[0]);
+      setUserViewandDetails(getLikeCommentAndSubscription[0]);
     } catch (error) {
       console.log(error);
     }
   }
-  FetchVideos(id);
+  async function fetchComments(id) {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/comments/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const commentInfo = response.data.data;
+      setComments(commentInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    FetchVideos(id);
+    fetchComments(id);
+  }, [id]);
 
   return (
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0">
@@ -61,12 +90,18 @@ export function VideoPlayerPage() {
         <div className="col-span-12 w-full">
           <div className="relative mb-4 w-full pt-[56%]">
             <div className="absolute inset-0">
-              <video className="h-full w-full" controls muted="">
-                <source
-                  src={videoDetails.videoFile}
-                  type={videoDetails.videoType}
-                />
-              </video>
+              {videoDetails?.videoFile ? (
+                <>
+                  <video className="h-full w-full" controls>
+                    <source
+                      src={videoDetails.videoFile}
+                      type={videoDetails.videoType || "video/mp4"}
+                    />
+                  </video>
+                </>
+              ) : (
+                <p>Loading video...</p>
+              )}
             </div>
           </div>
           <div
@@ -75,10 +110,11 @@ export function VideoPlayerPage() {
           >
             <div className="flex flex-wrap gap-y-2">
               <div className="w-full md:w-1/2 lg:w-full xl:w-1/2">
-                <h1 className="text-lg font-bold">{videoDetails.title}</h1>
+                <h1 className="text-lg font-bold">{videoDetails?.title}</h1>
                 <p className="flex text-sm text-gray-200">
                   <span>
-                    {videoDetails.views} Views &nbsp; {videoDetails.createdAt}
+                    {videoDetails?.views} Views &nbsp;{" "}
+                    {format(videoDetails?.createdAt)}
                   </span>
                 </p>
               </div>
@@ -87,8 +123,7 @@ export function VideoPlayerPage() {
                   <div className="flex overflow-hidden justify-center align-middle items-center rounded-lg border">
                     <button
                       className="group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)]"
-                      data-like={videoDetails.likeCount}
-                      data-like-alt="3051"
+                      data-like={videoDetails?.likeCount || 0} // data-like-alt="3051"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
                         <ThumbsUp size={22} />
@@ -96,8 +131,8 @@ export function VideoPlayerPage() {
                     </button>
                     <button
                       className="group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)]"
-                      data-like={videoDetails.dislikeCount}
-                      data-like-alt="21"
+                      data-like={videoDetails?.dislikeCount || 0}
+                      // data-like-alt="21"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
                         <ThumbsDown size={22} />
@@ -162,14 +197,17 @@ export function VideoPlayerPage() {
               <div className="flex items-center gap-x-4">
                 <div className="mt-2 h-12 w-12 shrink-0">
                   <img
-                    src={videoDetails.owner.avatar}
+                    src={videoDetails?.owner_details?.avatar}
                     className="h-full w-full rounded-full"
                   />
                 </div>
                 <div className="block">
-                  <p className="text-gray-200">{videoDetails.owner.username}</p>
+                  <p className="text-gray-200">
+                    {videoDetails?.owner_details.username}
+                  </p>
                   <p className="text-sm text-gray-400">
-                    {videoDetails.owner.subscribers} &nbsp; Subscribers
+                    {userViewandDetails?.TotalNumberOfSubscriber}&nbsp;
+                    Subscribers
                   </p>
                 </div>
               </div>
@@ -188,12 +226,12 @@ export function VideoPlayerPage() {
             <hr className="my-4 border-white" />
 
             <div className="h-5 overflow-hidden group-focus:h-auto">
-              <p className="text-sm">{videoDetails.description} </p>
+              <p className="text-sm">{videoDetails?.description} </p>
             </div>
           </div>
           <button className="peer w-full rounded-lg border p-4 text-left duration-200 hover:bg-white/5 focus:bg-white/5 sm:hidden">
             <h6 className="font-semibold">
-              {videoDetails.commentCount} Comments...
+              {videoDetails?.commentCount} Comments...
             </h6>
           </button>
           <button className="peer w-full rounded-lg border p-4 text-left duration-200 hover:bg-white/5 focus:bg-white/5 sm:hidden">
@@ -202,7 +240,7 @@ export function VideoPlayerPage() {
           <div className="fixed inset-x-0 top-full z-[60] h-[calc(100%-69px)] overflow-auto rounded-lg border bg-[#121212] p-4 duration-200 hover:top-[67px] peer-focus:top-[67px] sm:static sm:h-auto sm:max-h-[500px] lg:max-h-none">
             <div className="block">
               <h6 className="mb-4 font-semibold">
-                {videoDetails.commentCount}Comments
+                {videoDetails?.commentCount}Comments
               </h6>
               <input
                 type="text"
@@ -212,8 +250,8 @@ export function VideoPlayerPage() {
             </div>
             <hr className="my-4 border-white" />
 
-            {videoDetails.comments.map((comment) => (
-              <Comment comment={comment} key={comment.id} />
+            {comments?.map((comment) => (
+              <Comment comment={comment} key={comment._id} />
             ))}
           </div>
         </div>
