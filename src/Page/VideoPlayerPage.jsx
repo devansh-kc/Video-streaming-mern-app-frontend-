@@ -41,6 +41,7 @@ export function VideoPlayerPage() {
   const [videoDetails, setVideoDetails] = useState(null);
   const [userViewandDetails, setUserViewandDetails] = useState(null);
   const [comments, setComments] = useState(null);
+  const [commentText, setCommentText] = useState("");
   async function FetchVideos(id) {
     try {
       const response = await axios.get(
@@ -75,6 +76,48 @@ export function VideoPlayerPage() {
       );
       const commentInfo = response.data.data;
       setComments(commentInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function addLikes(id) {
+    console.log(id);
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/likes/toggle/v/${id}`,
+        {
+          // headers: {"Content-Type":"application/json"}
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleCommentSubmit(event) {
+    try {
+      if (event.key == "Enter") {
+        event.preventDefault();
+        const respone = await axios.post(
+          `http://localhost:8000/api/v1/comments/${id}`,
+          {
+            content: commentText,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            withCredentials: true,
+          }
+        );
+        console.log(respone);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -122,8 +165,13 @@ export function VideoPlayerPage() {
                 <div className="flex items-center justify-between gap-x-4 md:justify-end lg:justify-between xl:justify-end">
                   <div className="flex overflow-hidden justify-center align-middle items-center rounded-lg border">
                     <button
-                      className="group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)]"
-                      data-like={videoDetails?.likeCount || 0} // data-like-alt="3051"
+                      onClick={() => addLikes(id)}
+                      className={`group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)] ${
+                        userViewandDetails?.likedByUser
+                          ? "bg-[#ae7aff] text-white"
+                          : ""
+                      }`}
+                      data-like={userViewandDetails?.totalLikesOnTheVideo} // data-like-alt="3051"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
                         <ThumbsUp size={22} />
@@ -131,7 +179,7 @@ export function VideoPlayerPage() {
                     </button>
                     <button
                       className="group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)]"
-                      data-like={videoDetails?.dislikeCount || 0}
+                      data-like={videoDetails?.dislikeCount}
                       // data-like-alt="21"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
@@ -240,12 +288,16 @@ export function VideoPlayerPage() {
           <div className="fixed inset-x-0 top-full z-[60] h-[calc(100%-69px)] overflow-auto rounded-lg border bg-[#121212] p-4 duration-200 hover:top-[67px] peer-focus:top-[67px] sm:static sm:h-auto sm:max-h-[500px] lg:max-h-none">
             <div className="block">
               <h6 className="mb-4 font-semibold">
-                {videoDetails?.commentCount}Comments
+                {userViewandDetails?.totalCommentOnTheVideo}&nbsp;Comments
               </h6>
+
               <input
                 type="text"
                 className="w-full rounded-lg border bg-transparent px-2 py-1 placeholder-white"
                 placeholder="Add a Comment"
+                value={commentText}
+                onKeyDown={handleCommentSubmit}
+                onChange={(e) => setCommentText(e.target.value)}
               />
             </div>
             <hr className="my-4 border-white" />
