@@ -6,6 +6,14 @@ import RelatedVideo from "../components/RelatedVideoComponent/RelatedVideo";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { format } from "timeago.js";
+import { useSelector } from "react-redux";
+import {
+  addComment,
+  fetchComments,
+  fetchVideos,
+  addLike,
+} from "../Slice/video.slice.js";
+import { useDispatch } from "react-redux";
 function CheckBoxInput({ name, htmlfor }) {
   return (
     <li className="mb-2 last:mb-0">
@@ -38,94 +46,28 @@ function CheckBoxInput({ name, htmlfor }) {
 
 export function VideoPlayerPage() {
   const { id } = useParams();
-  const [videoDetails, setVideoDetails] = useState(null);
-  const [userViewandDetails, setUserViewandDetails] = useState(null);
-  const [comments, setComments] = useState(null);
   const [commentText, setCommentText] = useState("");
-  async function FetchVideos(id) {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/videos/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      const { getLikeCommentAndSubscription, getVideoDetails } =
-        response.data.data[0];
-
-      setVideoDetails(getVideoDetails[0]);
-      setUserViewandDetails(getLikeCommentAndSubscription[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function fetchComments(id) {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/comments/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      const commentInfo = response.data.data;
-      setComments(commentInfo);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function addLikes(id) {
-    console.log(id);
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/likes/toggle/v/${id}`,
-        {
-          // headers: {"Content-Type":"application/json"}
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const dispatch = useDispatch();
+  const { comments, videoDetails } = useSelector((state) => state.video);
+  const video = videoDetails?.getVideoDetails[0];
+  const videoStats = videoDetails?.getLikeCommentAndSubscription[0];
 
   async function handleCommentSubmit(event) {
     try {
-      if (event.key == "Enter") {
-        event.preventDefault();
-        const respone = await axios.post(
-          `http://localhost:8000/api/v1/comments/${id}`,
-          {
-            content: commentText,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-
-            withCredentials: true,
-          }
-        );
-        console.log(respone);
+      if (event.key === "Enter" && commentText.trim()) {
+        await dispatch(addComment({ id, content: commentText }));
+        setCommentText(""); // Clear input after submitting
+        dispatch(fetchComments(id)); // Refresh comments
       }
     } catch (error) {
       console.log(error);
     }
   }
   useEffect(() => {
-    FetchVideos(id);
-    fetchComments(id);
-  }, [id]);
+    dispatch(fetchVideos(id));
+    dispatch(fetchComments(id));
+    dispatch(addLike(id));
+  }, [dispatch, id]);
 
   return (
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0">
@@ -133,12 +75,12 @@ export function VideoPlayerPage() {
         <div className="col-span-12 w-full">
           <div className="relative mb-4 w-full pt-[56%]">
             <div className="absolute inset-0">
-              {videoDetails?.videoFile ? (
+              {video?.videoFile ? (
                 <>
                   <video className="h-full w-full" controls>
                     <source
-                      src={videoDetails.videoFile}
-                      type={videoDetails.videoType || "video/mp4"}
+                      src={video.videoFile}
+                      type={video.videoType || "video/mp4"}
                     />
                   </video>
                 </>
@@ -153,11 +95,10 @@ export function VideoPlayerPage() {
           >
             <div className="flex flex-wrap gap-y-2">
               <div className="w-full md:w-1/2 lg:w-full xl:w-1/2">
-                <h1 className="text-lg font-bold">{videoDetails?.title}</h1>
+                <h1 className="text-lg font-bold">{video?.title}</h1>
                 <p className="flex text-sm text-gray-200">
                   <span>
-                    {videoDetails?.views} Views &nbsp;{" "}
-                    {format(videoDetails?.createdAt)}
+                    {video?.views} Views &nbsp; {format(video?.createdAt)}
                   </span>
                 </p>
               </div>
@@ -165,13 +106,16 @@ export function VideoPlayerPage() {
                 <div className="flex items-center justify-between gap-x-4 md:justify-end lg:justify-between xl:justify-end">
                   <div className="flex overflow-hidden justify-center align-middle items-center rounded-lg border">
                     <button
-                      onClick={() => addLikes(id)}
+                      onClick={() => {
+                        dispatch(addLike(id));
+                        console.log(videoStats);
+                      }}
                       className={`group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)] ${
-                        userViewandDetails?.likedByUser
+                        videoStats?.likedByUser
                           ? "bg-[#ae7aff] text-white"
-                          : ""
+                          : " bg-transparent text-white"
                       }`}
-                      data-like={userViewandDetails?.totalLikesOnTheVideo} // data-like-alt="3051"
+                      data-like={videoStats?.totalLikesOnTheVideo} // data-like-alt="3051"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
                         <ThumbsUp size={22} />
@@ -179,7 +123,7 @@ export function VideoPlayerPage() {
                     </button>
                     <button
                       className="group/btn flex items-center gap-x-2 border-r border-gray-700 px-4 py-1.5 after:content-[attr(data-like)] hover:bg-white/10 focus:after:content-[attr(data-like-alt)]"
-                      data-like={videoDetails?.dislikeCount}
+                      data-like={video?.dislikeCount}
                       // data-like-alt="21"
                     >
                       <span className="inline-block w-5 group-focus/btn:text-[#ae7aff]">
@@ -245,17 +189,16 @@ export function VideoPlayerPage() {
               <div className="flex items-center gap-x-4">
                 <div className="mt-2 h-12 w-12 shrink-0">
                   <img
-                    src={videoDetails?.owner_details?.avatar}
+                    src={video?.owner_details?.avatar}
                     className="h-full w-full rounded-full"
                   />
                 </div>
                 <div className="block">
                   <p className="text-gray-200">
-                    {videoDetails?.owner_details.username}
+                    {video?.owner_details.username}
                   </p>
                   <p className="text-sm text-gray-400">
-                    {userViewandDetails?.TotalNumberOfSubscriber}&nbsp;
-                    Subscribers
+                    {videoStats?.TotalNumberOfSubscriber}&nbsp; Subscribers
                   </p>
                 </div>
               </div>
@@ -274,13 +217,11 @@ export function VideoPlayerPage() {
             <hr className="my-4 border-white" />
 
             <div className="h-5 overflow-hidden group-focus:h-auto">
-              <p className="text-sm">{videoDetails?.description} </p>
+              <p className="text-sm">{video?.description} </p>
             </div>
           </div>
           <button className="peer w-full rounded-lg border p-4 text-left duration-200 hover:bg-white/5 focus:bg-white/5 sm:hidden">
-            <h6 className="font-semibold">
-              {videoDetails?.commentCount} Comments...
-            </h6>
+            <h6 className="font-semibold">{video?.commentCount} Comments...</h6>
           </button>
           <button className="peer w-full rounded-lg border p-4 text-left duration-200 hover:bg-white/5 focus:bg-white/5 sm:hidden">
             <h6 className="font-semibold">573 Comments...</h6>
@@ -288,7 +229,7 @@ export function VideoPlayerPage() {
           <div className="fixed inset-x-0 top-full z-[60] h-[calc(100%-69px)] overflow-auto rounded-lg border bg-[#121212] p-4 duration-200 hover:top-[67px] peer-focus:top-[67px] sm:static sm:h-auto sm:max-h-[500px] lg:max-h-none">
             <div className="block">
               <h6 className="mb-4 font-semibold">
-                {userViewandDetails?.totalCommentOnTheVideo}&nbsp;Comments
+                {videoStats?.totalCommentOnTheVideo}&nbsp;Comments
               </h6>
 
               <input
@@ -302,9 +243,9 @@ export function VideoPlayerPage() {
             </div>
             <hr className="my-4 border-white" />
 
-            {comments?.map((comment) => (
-              <Comment comment={comment} key={comment._id} />
-            ))}
+            {comments?.map((comment) => {
+              return <Comment comment={comment} key={comment?._id} />;
+            })}
           </div>
         </div>
 
