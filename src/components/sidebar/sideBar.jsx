@@ -20,14 +20,24 @@ function SideBar({ hidden }) {
       } `}
     >
       <ul className="flex justify-around gap-y-2 sm:sticky sm:top-[106px] sm:min-h-[calc(100vh-130px)] sm:flex-col">
-        <OptionComponent Icon={<Home />} Name="Home" hidden={hidden} navigation="/" />
+        <OptionComponent
+          Icon={<Home />}
+          Name="Home"
+          hidden={hidden}
+          navigation="/"
+        />
         <OptionComponent
           Icon={<ThumbsUp />}
           Name="Liked Videos"
           ClassName="hidden sm:block"
           hidden={hidden}
         />
-        <OptionComponent Icon={<History />} Name="History" hidden={hidden} />
+        <OptionComponent
+          Icon={<History />}
+          Name="History"
+          hidden={hidden}
+          navigation="/history"
+        />
         <OptionComponent
           Icon={<Video />}
           Name="My Content"

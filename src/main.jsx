@@ -18,6 +18,7 @@ import PrivacyPage from "./Page/PrivacyPage.jsx";
 import TermsAndConditionPage from "./Page/TermsAndConditionsPage.jsx";
 import store from "./store/Store.js";
 import { Provider } from "react-redux";
+import HistoryPage from "./Page/HistoryPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/history",
+        element: <HistoryPage />,
       },
       {
         path: "/login",

@@ -3,6 +3,27 @@ import { Link } from "react-router-dom";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 export function HorizontalCard({ VideoDetails }) {
+  function formatDuration(sec) {
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const secs = Math.floor(sec % 60);
+
+    const paddedMinutes = String(minutes).padStart(2, "0");
+    const paddedSeconds = String(secs).padStart(2, "0");
+    if (hours > 0) {
+      const paddedHours = String(hours).padStart(2, "0");
+      return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+    }
+
+    // If minutes are greater than zero, include minutes and seconds in the output
+    if (minutes > 0) {
+      return `${paddedMinutes}:${paddedSeconds}`;
+    }
+
+    // Otherwise, return only seconds
+    return `0:${paddedSeconds}`;
+  }
+
   return (
     <div className="w-full" key={VideoDetails._id}>
       <div className="relative mb-2 pt-[56%]">
@@ -16,7 +37,7 @@ export function HorizontalCard({ VideoDetails }) {
           </Link>
         </div>
         <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
-          {VideoDetails.duration}
+          {formatDuration(VideoDetails.duration)}
         </span>
       </div>
       <div className="flex gap-x-2">
