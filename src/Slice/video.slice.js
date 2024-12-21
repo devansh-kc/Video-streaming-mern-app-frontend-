@@ -63,7 +63,25 @@ export const addLike = createAsyncThunk(
     }
   }
 );
+export const fetchHistory = createAsyncThunk(
+  "video/fetchHistory",
+  async (thunkAPI) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/users/history",
+        {
+          headers: { "Content-Type": "applicaiton/json" },
+          withCredentials: true,
+        }
+      );
 
+      return response.data?.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 const videoSlice = createSlice({
   name: "video",
   initialState: {
@@ -72,6 +90,7 @@ const videoSlice = createSlice({
     likes: 0,
     loading: false,
     error: null,
+    history: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -125,6 +144,20 @@ const videoSlice = createSlice({
         state.error = null;
       })
       .addCase(addLike.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+
+    builder
+      .addCase(fetchHistory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchHistory.fulfilled, (state, action) => {
+        state.history = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchHistory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
