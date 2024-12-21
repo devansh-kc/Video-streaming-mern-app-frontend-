@@ -31,6 +31,7 @@ function SideBar({ hidden }) {
           Name="Liked Videos"
           ClassName="hidden sm:block"
           hidden={hidden}
+          navigation="/likedVideos"
         />
         <OptionComponent
           Icon={<History />}

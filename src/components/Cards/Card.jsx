@@ -1,29 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { ThumbsDown, ThumbsUp, Video } from "lucide-react";
 
-export function HorizontalCard({ VideoDetails }) {
-  function formatDuration(sec) {
-    const hours = Math.floor(sec / 3600);
-    const minutes = Math.floor((sec % 3600) / 60);
-    const secs = Math.floor(sec % 60);
+function formatDuration(sec) {
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec % 3600) / 60);
+  const secs = Math.floor(sec % 60);
 
-    const paddedMinutes = String(minutes).padStart(2, "0");
-    const paddedSeconds = String(secs).padStart(2, "0");
-    if (hours > 0) {
-      const paddedHours = String(hours).padStart(2, "0");
-      return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
-    }
-
-    // If minutes are greater than zero, include minutes and seconds in the output
-    if (minutes > 0) {
-      return `${paddedMinutes}:${paddedSeconds}`;
-    }
-
-    // Otherwise, return only seconds
-    return `0:${paddedSeconds}`;
+  const paddedMinutes = String(minutes).padStart(2, "0");
+  const paddedSeconds = String(secs).padStart(2, "0");
+  if (hours > 0) {
+    const paddedHours = String(hours).padStart(2, "0");
+    return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
   }
 
+  // If minutes are greater than zero, include minutes and seconds in the output
+  if (minutes > 0) {
+    return `${paddedMinutes}:${paddedSeconds}`;
+  }
+
+  // Otherwise, return only seconds
+  return `0:${paddedSeconds}`;
+}
+
+export function HorizontalCard({ VideoDetails }) {
   return (
     <div className="w-full" key={VideoDetails._id}>
       <div className="relative mb-2 pt-[56%]">
@@ -64,13 +64,13 @@ export function HorizontalCard({ VideoDetails }) {
   );
 }
 
-export function VerticalCard({ VideoDetails }) {
+export function VerticalCard({ VideoDetails, owner }) {
   return (
     <div className="w-full max-w-3xl gap-x-4 md:flex">
       <div className="relative mb-2 w-full md:mb-0 md:w-5/12">
         <div className="w-full pt-[56%]">
           <div className="absolute inset-0">
-            <Link to={`/videopage/${VideoDetails.id}`}>
+            <Link to={`/videopage/${VideoDetails._id}`}>
               <img
                 src={VideoDetails.thumbnail}
                 alt={VideoDetails.title}
@@ -79,14 +79,14 @@ export function VerticalCard({ VideoDetails }) {
             </Link>
           </div>
           <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
-            {VideoDetails.duration}
+            {formatDuration(VideoDetails.duration)}
           </span>
         </div>
       </div>
       <div className="flex gap-x-2 md:w-7/12">
         <div className="h-10 w-10 shrink-0 md:hidden">
           <img
-            src={VideoDetails.owner.avatar}
+            src={owner.avatar}
             alt="another image"
             className="w-full h-full rounded-full"
           />
@@ -102,14 +102,12 @@ export function VerticalCard({ VideoDetails }) {
           <div className="flex items-center gap-x-4">
             <div className="mt-2 hidden h-10 w-10 shrink-0 md:block">
               <img
-                src={VideoDetails.owner.avatar}
-                alt={VideoDetails.owner.username}
+                src={owner.avatar}
+                alt={owner.username}
                 className="h-full w-full rounded-full"
               />
             </div>
-            <p className="text-sm text-gray-200">
-              {VideoDetails.owner.username}
-            </p>
+            <p className="text-sm text-gray-200">{owner.username}</p>
           </div>
           <p className="mt-2 hidden text-sm md:block">
             {VideoDetails.description}

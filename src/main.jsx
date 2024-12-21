@@ -19,6 +19,7 @@ import TermsAndConditionPage from "./Page/TermsAndConditionsPage.jsx";
 import store from "./store/Store.js";
 import { Provider } from "react-redux";
 import HistoryPage from "./Page/HistoryPage.jsx";
+import LikeVideosPage from "./Page/LikeVideosPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "/history",
         element: <HistoryPage />,
+      },
+      {
+        path: "/likedVideos",
+        element: <LikeVideosPage />,
       },
       {
         path: "/login",

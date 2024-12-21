@@ -74,8 +74,29 @@ export const fetchHistory = createAsyncThunk(
           withCredentials: true,
         }
       );
+      const { data } = response.data;
 
-      return response.data?.data;
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const fetchLikeVideos = createAsyncThunk(
+  "video/fetchLikeVideos",
+  async (thunkAPI) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/likes/videos",
+        {
+          headers: { "Content-Type": "applicaiton/json" },
+          withCredentials: true,
+        }
+      );
+      const { data } = response.data;
+
+      return data;
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
@@ -91,6 +112,7 @@ const videoSlice = createSlice({
     loading: false,
     error: null,
     history: [],
+    likedVideo: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -158,6 +180,19 @@ const videoSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchHistory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchLikeVideos.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchLikeVideos.fulfilled, (state, action) => {
+        state.likedVideo = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchLikeVideos.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
