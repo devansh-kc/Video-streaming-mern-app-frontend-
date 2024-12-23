@@ -7,9 +7,6 @@ import {
   Users,
   Pencil,
   Plus,
-  X,
-  Smile,
-  Ellipsis,
 } from "lucide-react";
 
 import {
@@ -23,50 +20,18 @@ import { playlistList, videos, tweets, channels } from "../data";
 import EmptyData from "../components/EmptyDataComponent/EmptyData";
 import UploadVideoModalComponent from "../components/Upload Video Component/UploadVideoModalComponent";
 import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
+import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 
 function ChannelPage() {
   const [content, setContent] = useState("");
 
   let notShowVideos = false;
   const [activeTab, setActiveTab] = useState("videos");
+  const [showTweetPopup, setShowtweetPopup] = useState(false);
   const LoggedInUser = true;
 
-  function TweetPopup() {
-    return (
-      <div className="absolute inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center bg-black/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
-        <div className=" w-full max-w-lg overflow-auto rounded-lg border border-gray-700 bg-[#121212] p-4">
-          <div className="mb-6 flex items-start justify-between">
-            <h2 className="text-xl font-semibold">
-              Write down the Content for the Tweet
-              <span className="block text-sm text-gray-300">
-                Write something
-              </span>
-            </h2>
-            <button className="h-6 w-6">
-              <X />
-            </button>
-          </div>
-          <div className=" p-2  mb-5 gap-x-2">
-            <textarea
-              className="bg-transparent resize-none w-full h-full border p-5"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            ></textarea>
-            <div className="flex  items-center justify-end gap-x-3 px-3 mt-2">
-              <button className="inline-block h-5 w-5 hover:text-[#ae7aff]">
-                <Smile />
-              </button>
-              <button className="inline-block h-5 w-5 hover:text-[#ae7aff]">
-                <Ellipsis />
-              </button>
-              <button className="inline-block h-max w-max py-2 font-semibold px-3 bg-[#ae7aff] text-black">
-                send
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  function closeTweetPopup() {
+    setShowtweetPopup(false);
   }
 
   const renderContent = () => {
@@ -134,7 +99,13 @@ function ChannelPage() {
             ))}
 
             {LoggedInUser && (
-              <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
+              <button
+                onClick={() => {
+                  setShowtweetPopup(true);
+                  console.log(showTweetPopup);
+                }}
+                className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
+              >
                 <Plus size={22} />
                 Add a Tweet
               </button>
@@ -175,6 +146,7 @@ function ChannelPage() {
         setActiveTab("videos");
     }
   };
+
   return (
     <section className="relative w-full pb-[70px]  sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="relative min-h-[150px] w-full pt-[16.28%]">
@@ -277,7 +249,15 @@ function ChannelPage() {
         {renderContent()}
         {/* <UploadVideoModalComponent /> */}
         {/* <VideoUploadProgress /> */}
-        {/* <TweetPopup /> */}
+        {showTweetPopup ? (
+          <TweetPopup
+            content={content}
+            onChange={setContent}
+            onClose={closeTweetPopup}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </section>
   );

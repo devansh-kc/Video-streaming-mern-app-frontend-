@@ -66,7 +66,7 @@ export function VideoPlayerPage() {
   useEffect(() => {
     dispatch(fetchVideos(id));
     dispatch(fetchComments(id));
-    dispatch(addLike(id));
+    // dispatch(addLike(id));
   }, [dispatch, id]);
 
   return (

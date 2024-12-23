@@ -5,6 +5,8 @@ import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 export function HorizontalVideosPage() {
   const [video, setVideo] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   async function fetchAllVideos() {
     try {
       const response = await axios.get(
@@ -22,12 +24,22 @@ export function HorizontalVideosPage() {
       setVideo(data);
     } catch (error) {
       console.log(error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     fetchAllVideos();
   }, []);
+
+  if (loading) {
+    return <div className="text-center">Loading videos...</div>;
+  }
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
 
   return (
     <>
@@ -45,7 +57,7 @@ export function HorizontalVideosPage() {
 export function VerticalVideoPage() {
   const [searchParams] = useSearchParams();
   const Title = decodeURI(searchParams.get("query"));
-  console.log(Title);
+
   const filteredData = videos.filter((video) => video.title.includes(Title));
 
   return (

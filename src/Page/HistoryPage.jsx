@@ -15,7 +15,11 @@ function HistoryPage() {
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="flex flex-col gap-4 p-4">
         {history.map((historyVideos) => (
-          <VerticalCard VideoDetails={historyVideos} key={historyVideos?._id} />
+          <VerticalCard
+            VideoDetails={historyVideos}
+            owner={historyVideos.owner}
+            key={historyVideos?._id}
+          />
         ))}
       </div>
     </section>
