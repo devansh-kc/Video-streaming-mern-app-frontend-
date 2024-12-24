@@ -25,10 +25,11 @@ import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 function ChannelPage() {
   const [content, setContent] = useState("");
 
-  let notShowVideos = false;
+  let notShowVideos = true;
   const [activeTab, setActiveTab] = useState("videos");
   const [showTweetPopup, setShowtweetPopup] = useState(false);
   const LoggedInUser = true;
+  const [showUploadVideoModal, setShowUploadVideoModal] = useState(false);
 
   function closeTweetPopup() {
     setShowtweetPopup(false);
@@ -38,20 +39,26 @@ function ChannelPage() {
     switch (activeTab) {
       case "videos":
         return notShowVideos ? (
-          <div className="m-4 p-4 align-middle text-center">
-            <EmptyData
-              icon={<Play />}
-              heading="No videos uploaded"
-              sentence="This page has yet to upload a video. Search another page in order to find more videos."
-              LoggedInUser={LoggedInUser}
-              Children={
-                <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
-                  <Plus size={22} />
-                  New Video
-                </button>
-              }
-            />
-          </div>
+          <>
+            <div className="m-4 p-4 align-middle text-center">
+              <EmptyData
+                icon={<Play />}
+                heading="No videos uploaded"
+                sentence="This page has yet to upload a video. Search another page in order to find more videos."
+                LoggedInUser={LoggedInUser}
+                Children={
+                  <button
+                    onClick={() => setShowUploadVideoModal(true)}
+                    className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
+                  >
+                    <Plus size={22} />
+                    New Video
+                  </button>
+                }
+              />
+            </div>
+            {showUploadVideoModal && <UploadVideoModalComponent />}
+          </>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4 p-4">
             {videos.map((video) => (
@@ -98,17 +105,23 @@ function ChannelPage() {
               <TweetCards tweetDetails={tweet} key={tweet.id} />
             ))}
 
-            {LoggedInUser && (
+            {showTweetPopup == false && (
               <button
                 onClick={() => {
                   setShowtweetPopup(true);
-                  console.log(showTweetPopup);
                 }}
                 className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
               >
                 <Plus size={22} />
                 Add a Tweet
               </button>
+            )}
+            {showTweetPopup && (
+              <TweetPopup
+                content={content}
+                setState={setContent}
+                closeFunction={closeTweetPopup}
+              />
             )}
           </div>
         );
@@ -148,7 +161,7 @@ function ChannelPage() {
   };
 
   return (
-    <section className="relative w-full pb-[70px]  sm:ml-[70px] sm:pb-0 lg:ml-0">
+    <section className=" relative w-full pb-[70px]  sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="relative min-h-[150px] w-full pt-[16.28%]">
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -247,17 +260,7 @@ function ChannelPage() {
           </li>
         </ul>
         {renderContent()}
-        {/* <UploadVideoModalComponent /> */}
         {/* <VideoUploadProgress /> */}
-        {showTweetPopup ? (
-          <TweetPopup
-            content={content}
-            onChange={setContent}
-            onClose={closeTweetPopup}
-          />
-        ) : (
-          ""
-        )}
       </div>
     </section>
   );
