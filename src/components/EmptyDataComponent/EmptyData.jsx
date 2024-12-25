@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
 
-function EmptyData({ icon, heading, sentence, LoggedInUser, Children }) {
+function EmptyData({ icon, heading, sentence, LoggedInUser, children }) {
   return (
     <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="flex h-full items-center justify-center">
@@ -13,7 +13,7 @@ function EmptyData({ icon, heading, sentence, LoggedInUser, Children }) {
           </p>
           <h5 className="mb-2 font-semibold">{heading}</h5>
           <p>{sentence} </p>
-        {LoggedInUser && Children ? Children : ""}
+          {LoggedInUser && children}
         </div>
       </div>
     </section>

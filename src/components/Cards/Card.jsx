@@ -216,6 +216,7 @@ export function PlayListVideoCard({ videoDetail }) {
 }
 
 export function TweetCards({ tweetDetails }) {
+  // console.log(tweetDetails);
   return (
     <div className="py-4">
       <div className="flex gap-3 border-b border-gray-700 py-4 last:border-b-transparent">

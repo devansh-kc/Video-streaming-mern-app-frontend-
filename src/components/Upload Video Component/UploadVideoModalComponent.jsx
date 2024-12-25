@@ -1,16 +1,24 @@
-import { Upload } from "lucide-react";
-import React from "react";
+import { Upload, X } from "lucide-react";
+import React, { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-function UploadVideoModalComponent() {
+function UploadVideoModalComponent({ closeFunction }) {
   return (
     <div className="absolute inset-0 z-10 bg-black/50 px-4 pb-[86px] pt-4 sm:px-14 sm:py-8">
       <div className="h-full overflow-auto border bg-[#121212]">
         <div className="flex items-center justify-between border-b p-4">
           <h2 className="text-xl font-semibold">Upload Video</h2>
-          <button className="group/btn mr-1 flex w-auto items-center gap-x-2 bg-[#ae7aff] px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">
-            Save
-          </button>
+          <div className=" flex-row flex mx-3 my-3 ">
+            <button className="group/btn mr-5 flex w-auto items-center gap-x-2 bg-[#ae7aff] px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">
+              Save
+            </button>
+            <button
+              onClick={closeFunction}
+              className="group/btn mr-5 flex w-auto items-center gap-x-2 px-3 py-2 text-center font-bold text-white transition-all duration-150 ease-in-out  "
+            >
+              close
+            </button>
+          </div>
         </div>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-y-4 p-4">
           <div className="w-full border-2 border-dashed px-4 py-12 text-center">

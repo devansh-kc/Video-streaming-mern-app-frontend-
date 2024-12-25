@@ -8,7 +8,6 @@ export function TweetPopup({ content, closeFunction, setState }) {
   const [EmojiPickerBool, setEmojiPickerBool] = useState(false);
 
   function onClickEmoji(emojiObject, event) {
-    console.log(emojiObject);
     setState((prevContent) => prevContent + emojiObject.emoji);
   }
 

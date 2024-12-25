@@ -90,7 +90,7 @@ export const fetchLikeVideos = createAsyncThunk(
       const response = await axios.get(
         "http://localhost:8000/api/v1/likes/videos",
         {
-          headers: { "Content-Type": "applicaiton/json" },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );

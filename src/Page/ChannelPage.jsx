@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Folder,
   Play,
@@ -21,19 +21,31 @@ import EmptyData from "../components/EmptyDataComponent/EmptyData";
 import UploadVideoModalComponent from "../components/Upload Video Component/UploadVideoModalComponent";
 import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
 import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTweets } from "../Slice/tweet.slice";
 
 function ChannelPage() {
   const [content, setContent] = useState("");
+  const dispatch = useDispatch();
+  const LoggedInUserInformation = useSelector((state) => state.user.userInfo);
+  const userTweets = useSelector((state) => state.tweet.userTweets);
 
-  let notShowVideos = true;
+  let notShowVideos = false;
   const [activeTab, setActiveTab] = useState("videos");
   const [showTweetPopup, setShowtweetPopup] = useState(false);
+
   const LoggedInUser = true;
   const [showUploadVideoModal, setShowUploadVideoModal] = useState(false);
 
   function closeTweetPopup() {
     setShowtweetPopup(false);
   }
+  function closeVideoModalPopup() {
+    setShowUploadVideoModal(false);
+  }
+  useEffect(() => {
+    dispatch(fetchTweets(LoggedInUserInformation?._id));
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -46,18 +58,20 @@ function ChannelPage() {
                 heading="No videos uploaded"
                 sentence="This page has yet to upload a video. Search another page in order to find more videos."
                 LoggedInUser={LoggedInUser}
-                Children={
-                  <button
-                    onClick={() => setShowUploadVideoModal(true)}
-                    className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
-                  >
-                    <Plus size={22} />
-                    New Video
-                  </button>
-                }
-              />
+              >
+                {" "}
+                <button
+                  onClick={() => setShowUploadVideoModal(true)}
+                  className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
+                >
+                  <Plus size={22} />
+                  New Video
+                </button>
+              </EmptyData>
             </div>
-            {showUploadVideoModal && <UploadVideoModalComponent />}
+            {showUploadVideoModal && (
+              <UploadVideoModalComponent closeFunction={closeVideoModalPopup} />
+            )}
           </>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4 p-4">
@@ -83,6 +97,7 @@ function ChannelPage() {
             ))}
           </div>
         );
+
       case "tweets":
         return notShowVideos ? (
           <div className="m-4 p-4 align-middle text-center">
@@ -91,25 +106,37 @@ function ChannelPage() {
               heading="No Tweets"
               sentence="This channel has yet to make a Tweet."
               LoggedInUser={LoggedInUser}
-              Children={
-                <button className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black">
+            >
+              {!showTweetPopup && (
+                <button
+                  onClick={() => {
+                    setShowtweetPopup(true);
+                  }}
+                  className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
+                >
                   <Plus size={22} />
                   Add a Tweet
                 </button>
-              }
-            />
+              )}
+            </EmptyData>
+
+            {showTweetPopup && (
+              <TweetPopup
+                content={content}
+                setState={setContent}
+                closeFunction={closeTweetPopup}
+              />
+            )}
           </div>
         ) : (
           <div>
-            {tweets.map((tweet) => (
+            {userTweets.map((tweet) => (
               <TweetCards tweetDetails={tweet} key={tweet.id} />
             ))}
 
             {showTweetPopup == false && (
               <button
-                onClick={() => {
-                  setShowtweetPopup(true);
-                }}
+                onClick={() => setShowtweetPopup(true)}
                 className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
               >
                 <Plus size={22} />
