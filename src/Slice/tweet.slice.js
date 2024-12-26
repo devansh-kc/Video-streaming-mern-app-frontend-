@@ -5,6 +5,7 @@ const initialState = {
   userTweets: [],
   loading: false,
   error: null,
+  ownerInformation: null,
 };
 
 export const fetchTweets = createAsyncThunk(
@@ -37,8 +38,8 @@ const tweetSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchTweets.fulfilled, (state, action) => {
-        console.log(action);
         state.userTweets = action.payload?.userTweets;
+        state.ownerInformation = action.payload?.tweetOwner[0];
         state.error = null;
         state.loading = false;
       })

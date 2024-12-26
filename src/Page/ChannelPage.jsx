@@ -28,7 +28,7 @@ function ChannelPage() {
   const [content, setContent] = useState("");
   const dispatch = useDispatch();
   const LoggedInUserInformation = useSelector((state) => state.user.userInfo);
-  const userTweets = useSelector((state) => state.tweet.userTweets);
+  const Tweet = useSelector((state) => state.tweet);
 
   let notShowVideos = false;
   const [activeTab, setActiveTab] = useState("videos");
@@ -130,8 +130,12 @@ function ChannelPage() {
           </div>
         ) : (
           <div>
-            {userTweets.map((tweet) => (
-              <TweetCards tweetDetails={tweet} key={tweet.id} />
+            {Tweet?.userTweets?.map((tweet) => (
+              <TweetCards
+                tweetDetails={tweet}
+                key={tweet.id}
+                owner={Tweet.ownerInformation}
+              />
             ))}
 
             {showTweetPopup == false && (

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ThumbsDown, ThumbsUp, Video } from "lucide-react";
+import { format } from "timeago.js";
 
 function formatDuration(sec) {
   const hours = Math.floor(sec / 3600);
@@ -215,23 +216,22 @@ export function PlayListVideoCard({ videoDetail }) {
   );
 }
 
-export function TweetCards({ tweetDetails }) {
-  // console.log(tweetDetails);
+export function TweetCards({ tweetDetails, owner }) {
   return (
     <div className="py-4">
       <div className="flex gap-3 border-b border-gray-700 py-4 last:border-b-transparent">
         <div className="h-14 w-14 shrink-0">
           <img
-            src={tweetDetails.owner.avatar}
-            alt={tweetDetails.owner.username}
+            src={owner.avatar}
+            alt={owner.username}
             className="h-full w-full rounded-full"
           />
         </div>
         <div className="w-full">
           <h4 className="mb-1 flex items-center gap-x-2">
-            <span className="font-semibold">{tweetDetails.owner.fullName}</span>
+            <span className="font-semibold">{owner.fullName}</span>
             <span className="inline-block text-sm text-gray-400">
-              {tweetDetails.createdAt}
+              {format(tweetDetails.createdAt)}
             </span>
           </h4>
           <p className="mb-2">{tweetDetails.content}</p>
