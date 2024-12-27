@@ -238,8 +238,7 @@ export function TweetCards({ tweetDetails, owner }) {
           <div className="flex gap-4">
             <button
               className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-like-count)] focus:after:content-[attr(data-like-count-alt)]"
-              data-like-count={tweetDetails.likeCount}
-              data-like-count-alt="424"
+              data-like-count={tweetDetails.totalNumberOfLikes || 0}
             >
               <ThumbsUp
                 size={18}
@@ -248,8 +247,7 @@ export function TweetCards({ tweetDetails, owner }) {
             </button>
             <button
               className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-dislike-count)] focus:after:content-[attr(data-dislike-count-alt)]"
-              data-dislike-count={tweetDetails.dislikeCount}
-              data-dislike-count-alt="88"
+              data-dislike-count={tweetDetails.dislikeCount || 0}
             >
               <ThumbsDown
                 size={18}

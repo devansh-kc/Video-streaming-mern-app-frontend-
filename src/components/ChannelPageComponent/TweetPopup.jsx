@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { X, Smile, Ellipsis } from "lucide-react";
-import { createPortal } from "react-dom";
-import Emoji from "../showEmoji/Emoji";
-import EmojiPicker from "emoji-picker-react";
 
-export function TweetPopup({ content, closeFunction, setState }) {
+import Emoji from "../showEmoji/Emoji";
+
+export function TweetPopup({
+  content,
+  closeFunction,
+  setState,
+  SubmitFunction,
+}) {
   const [EmojiPickerBool, setEmojiPickerBool] = useState(false);
 
   function onClickEmoji(emojiObject, event) {
     setState((prevContent) => prevContent + emojiObject.emoji);
   }
 
-  return createPortal(
+  return (
     <div className="absolute overflow-scroll  text-white inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center bg-black/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
       <div className=" w-full max-w-lg overflow-auto rounded-lg border border-gray-700 bg-[#121212] p-4">
         <div className="mb-6 flex items-start justify-between">
@@ -39,7 +43,10 @@ export function TweetPopup({ content, closeFunction, setState }) {
             <button className="inline-block h-5 w-5 hover:text-[#ae7aff]">
               <Ellipsis />
             </button>
-            <button className="inline-block h-max w-max py-2 font-semibold px-3 bg-[#ae7aff] text-black">
+            <button
+              onClick={SubmitFunction}
+              className="inline-block h-max w-max py-2 font-semibold px-3 bg-[#ae7aff] text-black"
+            >
               send
             </button>
           </div>
@@ -50,7 +57,6 @@ export function TweetPopup({ content, closeFunction, setState }) {
           )}
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }

@@ -30,16 +30,20 @@ export const fetchComments = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   "video/addComment",
-  async ({ id, content }) => {
-    const response = await axios.post(
-      `http://localhost:8000/api/v1/comments/${id}`,
-      { content },
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
-    return response.data.data;
+  async ({ id, content }, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/comments/${id}`,
+        { content },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
   }
 );
 

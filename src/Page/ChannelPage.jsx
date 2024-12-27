@@ -22,12 +22,15 @@ import UploadVideoModalComponent from "../components/Upload Video Component/Uplo
 import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
 import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTweets } from "../Slice/tweet.slice";
+import { fetchTweets, createTweet } from "../Slice/tweet.slice";
 
 function ChannelPage() {
   const [content, setContent] = useState("");
   const dispatch = useDispatch();
-  const LoggedInUserInformation = useSelector((state) => state.user.userInfo);
+  const { _id, username, fullName } = useSelector(
+    (state) => state.user.userInfo
+  );
+
   const Tweet = useSelector((state) => state.tweet);
 
   let notShowVideos = false;
@@ -43,9 +46,17 @@ function ChannelPage() {
   function closeVideoModalPopup() {
     setShowUploadVideoModal(false);
   }
+  function createTweetByLogedInUser(content) {
+    dispatch(createTweet({ content: content }));
+    setShowtweetPopup(false);
+    setContent("");
+  }
+
   useEffect(() => {
-    dispatch(fetchTweets(LoggedInUserInformation?._id));
-  }, []);
+    if (_id) {
+      dispatch(fetchTweets(_id));
+    }
+  }, [dispatch, _id]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -125,15 +136,16 @@ function ChannelPage() {
                 content={content}
                 setState={setContent}
                 closeFunction={closeTweetPopup}
+                SubmitFunction={() => createTweetByLogedInUser(content)}
               />
             )}
           </div>
         ) : (
           <div>
-            {Tweet?.userTweets?.map((tweet) => (
+            {Tweet.userTweets?.map((tweet) => (
               <TweetCards
                 tweetDetails={tweet}
-                key={tweet.id}
+                key={tweet._id}
                 owner={Tweet.ownerInformation}
               />
             ))}
@@ -152,6 +164,7 @@ function ChannelPage() {
                 content={content}
                 setState={setContent}
                 closeFunction={closeTweetPopup}
+                SubmitFunction={() => createTweetByLogedInUser(content)}
               />
             )}
           </div>
