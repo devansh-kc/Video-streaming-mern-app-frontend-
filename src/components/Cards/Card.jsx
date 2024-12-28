@@ -216,7 +216,7 @@ export function PlayListVideoCard({ videoDetail }) {
   );
 }
 
-export function TweetCards({ tweetDetails, owner }) {
+export function TweetCards({ tweetDetails, owner, LikeFunction }) {
   return (
     <div className="py-4">
       <div className="flex gap-3 border-b border-gray-700 py-4 last:border-b-transparent">
@@ -237,6 +237,7 @@ export function TweetCards({ tweetDetails, owner }) {
           <p className="mb-2">{tweetDetails.content}</p>
           <div className="flex gap-4">
             <button
+              onClick={LikeFunction}
               className="group inline-flex items-center gap-x-1 outline-none after:content-[attr(data-like-count)] focus:after:content-[attr(data-like-count-alt)]"
               data-like-count={tweetDetails.totalNumberOfLikes || 0}
             >

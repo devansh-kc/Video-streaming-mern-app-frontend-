@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   ownerInformation: null,
+  likes: null,
 };
 
 export const fetchTweets = createAsyncThunk(
@@ -50,13 +51,21 @@ export const createTweet = createAsyncThunk(
   }
 );
 
-export const addLike = createAsyncThunk(
+export const addTweetLike = createAsyncThunk(
   "tweets/addLike",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.post();
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/likes/toggle/t/${id}`,
+        {},
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+      const { message } = error?.response?.data;
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -91,6 +100,20 @@ const tweetSlice = createSlice({
         state.userTweets.push(action.payload);
       })
       .addCase(createTweet.rejected, (state, action) => {
+        state.loading = false;
+        state.error = true;
+      });
+    builder
+      .addCase(addTweetLike.pending, (state, action) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(addTweetLike.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        state.likes = action.payload;
+      })
+      .addCase(addTweetLike.rejected, (state, action) => {
         state.loading = false;
         state.error = true;
       });

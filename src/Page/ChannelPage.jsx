@@ -16,13 +16,13 @@ import {
   SubscribersCard,
   TweetCards,
 } from "../components/Cards/Card";
-import { playlistList, videos, tweets, channels } from "../data";
+import { playlistList, videos, channels } from "../data";
 import EmptyData from "../components/EmptyDataComponent/EmptyData";
 import UploadVideoModalComponent from "../components/Upload Video Component/UploadVideoModalComponent";
 import VideoUploadProgress from "../components/Upload Video Component/VideoUploadProgress";
 import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTweets, createTweet } from "../Slice/tweet.slice";
+import { fetchTweets, createTweet, addTweetLike } from "../Slice/tweet.slice";
 
 function ChannelPage() {
   const [content, setContent] = useState("");
@@ -147,18 +147,20 @@ function ChannelPage() {
                 tweetDetails={tweet}
                 key={tweet._id}
                 owner={Tweet.ownerInformation}
+                LikeFunction={() => dispatch(addTweetLike(tweet._id))}
               />
             ))}
-
-            {showTweetPopup == false && (
-              <button
-                onClick={() => setShowtweetPopup(true)}
-                className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
-              >
-                <Plus size={22} />
-                Add a Tweet
-              </button>
-            )}
+            <div className="flex justify-center items-center align-middle ">
+              {showTweetPopup == false && (
+                <button
+                  onClick={() => setShowtweetPopup(true)}
+                  className="mt-4  justify-center inline-flex items-center gap-x-2 bg-[#ae7aff] px-3 py-2 font-semibold text-black"
+                >
+                  <Plus size={22} />
+                  Add a Tweet
+                </button>
+              )}
+            </div>
             {showTweetPopup && (
               <TweetPopup
                 content={content}
