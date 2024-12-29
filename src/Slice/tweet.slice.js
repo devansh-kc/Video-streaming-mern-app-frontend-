@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const initialState = {
   userTweets: [],
@@ -65,6 +66,7 @@ export const addTweetLike = createAsyncThunk(
       );
     } catch (error) {
       const { message } = error?.response?.data;
+
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -115,7 +117,7 @@ const tweetSlice = createSlice({
       })
       .addCase(addTweetLike.rejected, (state, action) => {
         state.loading = false;
-        state.error = true;
+        state.error = action.payload;
       });
   },
 });

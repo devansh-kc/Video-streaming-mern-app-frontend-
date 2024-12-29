@@ -23,6 +23,7 @@ import VideoUploadProgress from "../components/Upload Video Component/VideoUploa
 import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTweets, createTweet, addTweetLike } from "../Slice/tweet.slice";
+import toast from "react-hot-toast";
 
 function ChannelPage() {
   const [content, setContent] = useState("");

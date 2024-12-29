@@ -20,6 +20,7 @@ import store from "./store/Store.js";
 import { Provider } from "react-redux";
 import HistoryPage from "./Page/HistoryPage.jsx";
 import LikeVideosPage from "./Page/LikeVideosPage.jsx";
+import { Toaster } from "react-hot-toast";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -90,6 +91,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
       <RouterProvider router={router} />
+      <Toaster />
     </React.StrictMode>
   </Provider>
 );
