@@ -24,6 +24,7 @@ import { TweetPopup } from "../components/ChannelPageComponent/TweetPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTweets, createTweet, addTweetLike } from "../Slice/tweet.slice";
 import toast from "react-hot-toast";
+import { fetchUserPlayList } from "../Slice/playlist.slice";
 
 function ChannelPage() {
   const [content, setContent] = useState("");
@@ -33,6 +34,7 @@ function ChannelPage() {
   );
 
   const Tweet = useSelector((state) => state.tweet);
+  const Playlist = useSelector((state) => state.playList);
 
   let notShowVideos = false;
   const [activeTab, setActiveTab] = useState("videos");
@@ -56,6 +58,7 @@ function ChannelPage() {
   useEffect(() => {
     if (_id) {
       dispatch(fetchTweets(_id));
+      dispatch(fetchUserPlayList(_id));
     }
   }, [dispatch, _id]);
 
@@ -104,9 +107,9 @@ function ChannelPage() {
           </div>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(410px,_1fr))] gap-4 p-4">
-            {playlistList.map((video) => (
-              <PlayListCard videoDetails={video} key={video.id} />
-            ))}
+            {Playlist.userPlayList.map((video) => {
+              return <PlayListCard videoDetails={video} key={video.id} />;
+            })}
           </div>
         );
 

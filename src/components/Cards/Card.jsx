@@ -143,9 +143,12 @@ export function PlayListCard({ videoDetails }) {
     <div className="w-full">
       <div className="relative mb-2 w-full pt-[56%]">
         <div className="absolute inset-0">
-          <Link to={`/channel/playlist/${videoDetails.id}`}>
+          <Link to={`/channel/playlist/${videoDetails._id}`}>
             <img
-              src={videoDetails.videos[0].thumbnail}
+              src={
+                videoDetails.videos[0]?.thumbnail ||
+                "https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              }
               alt={videoDetails.title}
               className="h-full w-full"
             />
@@ -171,22 +174,24 @@ export function PlayListCard({ videoDetails }) {
   );
 }
 
-export function PlayListVideoCard({ videoDetail }) {
+export function PlayListVideoCard({ videoDetail, owner }) {
   return (
     <div className="border">
       <div className="w-full max-w-3xl gap-x-4 sm:flex">
         <div className="relative mb-2 w-full sm:mb-0 sm:w-5/12">
           <div className="w-full pt-[56%]">
             <div className="absolute inset-0">
-              <img
-                src={videoDetail.thumbnail}
-                alt={videoDetail.title}
-                className="h-full w-full"
-              />
+              <Link to={`/videopage/${videoDetail._id}`}>
+                <img
+                  src={videoDetail.thumbnail}
+                  alt={videoDetail.title}
+                  className="h-full w-full"
+                />
+              </Link>
             </div>
           </div>
           <span className="absolute bottom-1 right-1 rounded bg-black px-1.5 text-sm">
-            {videoDetail.duration}
+            {formatDuration(videoDetail.duration)}
           </span>
         </div>
         <div className="flex gap-x-2 px-2 sm:w-7/12 sm:px-0">
@@ -195,19 +200,17 @@ export function PlayListVideoCard({ videoDetail }) {
               {videoDetail.title}
             </h6>
             <p className="flex text-sm text-gray-200 sm:mt-3">
-              {videoDetail.views}&nbsp;Views · {videoDetail.time}
+              {videoDetail.views}&nbsp;Views · {format(videoDetail.createdAt)}
             </p>
             <div className="flex flex-row items-center gap-x-4">
               <div className="mt-2 hidden h-10 w-10 shrink-0 sm:block">
                 <img
-                  src={videoDetail.owner.avatar}
-                  alt={videoDetail.owner.username}
+                  src={owner.avatar}
+                  alt={owner.username}
                   className="h-full w-full rounded-full"
                 />
               </div>
-              <p className="text-sm text-gray-200">
-                {videoDetail.owner.username}
-              </p>
+              <p className="text-sm text-gray-200">{owner.username}</p>
             </div>
           </div>
         </div>
