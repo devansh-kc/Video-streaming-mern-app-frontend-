@@ -114,7 +114,7 @@ function ChannelPage() {
         );
 
       case "tweets":
-        return notShowVideos ? (
+        return Tweet.userTweets.length == 0 ? (
           <div className="m-4 p-4 align-middle text-center">
             <EmptyData
               icon={<Users />}

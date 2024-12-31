@@ -146,7 +146,7 @@ export function PlayListCard({ videoDetails }) {
           <Link to={`/channel/playlist/${videoDetails._id}`}>
             <img
               src={
-                videoDetails.videos[0]?.thumbnail ||
+                videoDetails?.VideoThumbnail ||
                 "https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               }
               alt={videoDetails.title}
@@ -161,7 +161,8 @@ export function PlayListCard({ videoDetails }) {
                   <span className="inline-block"> videos</span>
                 </p>
                 <p className="text-sm text-gray-200">
-                  {videoDetails.views} Views ·  {videoDetails.createdAt}
+                  {videoDetails.TotalNumbersOfViews} Views · {" "}
+                  {format(videoDetails.createdAt)}
                 </p>
               </div>
             </div>

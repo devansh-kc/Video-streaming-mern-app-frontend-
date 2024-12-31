@@ -9,14 +9,14 @@ import { format } from "timeago.js";
 function PlayListVideoPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { userPlayList } = useSelector((state) => state.playList);
+  const playListData = useSelector((state) => state.playList.userPlayList);
   useEffect(() => {
     dispatch(fetchUserPlayListById(id));
   }, [id]);
+  console.log(playListData);
 
   // const playList = playlistList[id - 1];
   // playList.videos = playList?.videos.filter((video) => video.isPublished);
-
   return (
     // <h1> h1</h1>
 
@@ -26,8 +26,8 @@ function PlayListVideoPage() {
           <div className="relative mb-2 w-full pt-[56%]">
             <div className="absolute inset-0">
               <img
-                src={userPlayList[0]?.Video_details[0]?.thumbnail}
-                alt={userPlayList[0]?.Video_details[0]?.title}
+                src={playListData.Video_details?.thumbnail}
+                alt={playListData?.Video_details?.title}
                 className="h-full w-full"
               />
               <div className="absolute inset-x-0 bottom-0">
@@ -36,45 +36,43 @@ function PlayListVideoPage() {
                     <p className="flex justify-between">
                       <span className="inline-block">Play List</span>
                       <span className="inline-block">
-                        {userPlayList[0]?.Video_details.length} &nbsp; videos
+                        {playListData?.Video_details?.length} &nbsp; videos
                       </span>
                     </p>
                     <p className="text-sm text-gray-200">
-                      {userPlayList[0]?.totalViews} Views&nbsp;·&nbsp;
-                      {format(userPlayList[0]?.createdAt)}
+                      {playListData?.totalViews} Views&nbsp;·&nbsp;
+                      {format(playListData?.createdAt)}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <h6 className="mb-1 font-semibold">{userPlayList[0]?.name}</h6>
+          <h6 className="mb-1 font-semibold">{playListData?.name}</h6>
           <p className="flex text-sm text-gray-200">
-            {userPlayList[0]?.description}
+            {playListData?.description}
           </p>
 
           <div className=" mt-6 flex items-center gap-x-3">
             <div className="h-16 w-16 shrink-0 ">
               <img
-                src={userPlayList[0]?.owner.avatar}
-                alt={userPlayList[0]?.owner.username}
+                src={playListData?.owner?.avatar}
+                alt={playListData?.owner?.username}
                 className="h-full w-full rounded-full"
               />
             </div>
             <div className="w-full">
-              <h6 className="font-semibold">
-                {userPlayList[0]?.owner.username}
-              </h6>
+              <h6 className="font-semibold">{playListData?.owner?.username}</h6>
               <p className="text-sm text-gray-300">757K Subscribers</p>
             </div>
           </div>
         </div>
 
         <div className="flex w-full flex-col gap-y-4">
-          {userPlayList[0]?.Video_details.map((videoDetail) => {
+          {playListData?.Video_details?.map((videoDetail) => {
             return (
               <PlayListVideoCard
-                owner={userPlayList[0]?.owner}
+                owner={playListData?.owner}
                 videoDetail={videoDetail}
                 key={videoDetail.id}
               />
